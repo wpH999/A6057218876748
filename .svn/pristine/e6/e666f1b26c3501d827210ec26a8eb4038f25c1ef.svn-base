@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>个人信息</title>
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" href="../css/api.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../css/shijian.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<link rel="stylesheet" href="../css/Person_Eject.css" />
+		<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/jquer_shijian.js"></script>
+		<script type="text/javascript" src="../js/person_show.js"></script>
+	</head>
+	<body class="div_dispay">
+		<div class="container">
+			<div class="page_header">
+				<div class="page_heade">
+					<a href="javascript:history.go(-1)" class="glyphicon glyphicon-chevron-left pull-left page_head Pers"></a>
+					<span>个人信息</span>
+				</div>
+			</div>
+		</div>
+		<div class="Person_info"></div>
+		<div class="Perinfo_center">
+			<div class="container">
+				<div class="Perinfo" id="Head">
+					<div class="pull-left">
+						头像
+					</div>
+					<div class="pull-right Pers_img"><img src="../image/swipe/iteml_3.png" />
+						<a class="glyphicon glyphicon-chevron-right pull-right Pers_icon"></a>
+					</div>
+				</div>
+				<div class="show_list">
+					<div class="display_div">
+						<h3 style="color: #1CA1EE;">选择头像</h3>
+						<a>查看头像</a>
+						<a style="border-top: 1px solid #E3E3E3;border-bottom: 1px solid #E3E3E3;">更换头像</a>
+						<a id="cancel">取消</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="Perinfo_center">
+			<div class="container">
+				<div class="Perinfo">
+					<div class="pull-left">
+						手机
+					</div>
+					<div class="pull-left Perinfo_phone">
+						13985203779
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="Perinfo_center">
+			<div class="container">
+				<div class="Perinfo" id="nickname">
+					<div class="pull-left">
+						昵称
+					</div>
+					<div class="pull-left Perinfo_phone">
+						lr_32951605
+					</div>
+					<div class="pull-right Perinfo_modify">
+						修改 <a class="glyphicon glyphicon-chevron-right pull-right Pers_icon"></a>
+					</div>
+				</div>
+				<div class="show_nickname">
+					<div class="nickname_div">
+						<div class="nickname_top">
+							<a style="text-align: left;" id="nickname_cancel">取消</a>
+							<a>修改昵称</a>
+							<a style="text-align: right;">确定</a>
+						</div>
+						<div class="nickname_back">
+							dsfd
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="Perinfo_center">
+			<div class="container">
+				<div class="Perinfo" id="Gender">
+					<div class="pull-left">
+						性别
+					</div>
+					<div class="pull-left Perinfo_phone">
+						男
+					</div>
+					<div class="pull-right Perinfo_modify">
+						设置 <a class="glyphicon glyphicon-chevron-right pull-right Pers_icon"></a>
+					</div>
+				</div>
+				<div class="show_Gender">
+					<div class="Gender_div">
+						<h5 style="color: #1CA1EE;border-bottom: 1px solid #EEEEEE;line-height: 40px;">选择您的性别</h5>
+						<a>男</a>
+						<a style="border-top: 1px solid #E3E3E3;border-bottom: 1px solid #E3E3E3;">女</a>
+						<a id="Gender_cancel">取消</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="Perinfo_center">
+			<div class="container">
+				<div class="Perinfo" id="Birth">
+					<div class="pull-left">
+						生日
+					</div>
+					<div class="pull-left Perinfo_phone">
+						1996-07-11
+					</div>
+					<div class="pull-right Perinfo_modify">
+						设置 <a class="glyphicon glyphicon-chevron-right pull-right Pers_icon"></a>
+					</div>
+				</div>
+				<div class="show_Birth">
+					<div class="Birth_div"></div>
+				</div>
+			</div>
+		</div>
+		<div class="Perinfo_center">
+			<div class="container">
+				<div class="Perinfo" id="Fullname">
+					<div class="pull-left">
+						姓名
+					</div>
+					<div class="pull-left Perinfo_phone">
+						小眼睛
+					</div>
+					<div class="pull-right Perinfo_modify">
+						设置 <a class="glyphicon glyphicon-chevron-right pull-right Pers_icon"></a>
+					</div>
+				</div>
+				<div class="show_Fullname">
+					<div class="Fullname_div">
+						<div class="nickname_top">
+							<a style="text-align: left;" id="Fullname_cancel">取消</a>
+							<a>姓名</a>
+							<a style="text-align: right;">确定</a>
+						</div>
+						<div class="nickname_back">
+							dsfd
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="Perinfo_center">
+			<div class="container">
+				<div class="Perinfo" id="wedding">
+					<div class="pull-left">
+						婚期
+					</div>
+					<div class="pull-left Perinfo_phone"></div>
+					<div class="pull-right Perinfo_modify">
+						设置 <a class="glyphicon glyphicon-chevron-right pull-right Pers_icon"></a>
+					</div>
+				</div>
+				<div class="show_wedding">
+					<div class="wedding_div"></div>
+				</div>
+			</div>
+		</div>
+		<div class="Perinfo_center">
+			<div class="container">
+				<div class="Perinfo" id="Password">
+					<div class="pull-left">
+						密码
+					</div>
+					<div class="pull-left Perinfo_phone">
+						******
+					</div>
+					<div class="pull-right Perinfo_modify">
+						修改 <a class="glyphicon glyphicon-chevron-right pull-right Pers_icon"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

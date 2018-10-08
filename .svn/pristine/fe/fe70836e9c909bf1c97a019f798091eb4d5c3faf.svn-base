@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>我的订单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../css/api.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<link rel="stylesheet" href="../layer/skin/default/layer.css" />
+		<script type="text/javascript" src="../js/api.js"></script>
+		<script type="text/javascript" src="../js/boot.jquery.js"></script>
+		<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+		<style>
+		</style>
+	</head>
+	<body>
+		<div class="Collect_header">
+			<div class="container">
+				<div class="page_header">
+					<div class="page_heade">
+						<a href="javascript:history.go(-1)" class="pull-left"><span class="glyphicon glyphicon-chevron-left page_head"></span></a>
+						<span>评价商品</span><a style="float: right;" id="add" type="submit">发布</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style="border: 1px solid #eee;margin-top: 10px;">
+			<textarea name="commentOfGoodsText" id="commentOfGoodsText" cols="30" rows="5" placeholder="请输入评价：" style="width: 100%;border:1px solid white;"></textarea>
+		</div>
+		<div style="margin-top: 10px;" id="img"></div>
+		<div style="border: 1px solid #eee;margin-top: 10px;">
+			<input type="button" value="上传图片" class="btn btn-default" id="uploadImg"/>
+		</div>
+		<!--商品id-->
+		<input type="hidden" id="deliveryId" value="" />
+		<script src="../js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../layer/layer.js"></script>
+		<script type="text/javascript">
+			apiready = function() {
+				var commentOfGoodsImg = new Array();
+				$("#uploadImg").click(function() {
+					var UIMediaScanner = api.require('UIMediaScanner');
+					UIMediaScanner.open({
+						type : 'picture',
+						column : 4,
+						classify : true,
+						max : 4,
+						sort : {
+							key : 'time',
+							order : 'desc'
+						},
+						texts : {
+							stateText : '已选择*项',
+							cancelText : '取消',
+							finishText : '完成'
+						},
+						styles : {
+							bg : '#fff',
+							mark : {
+								icon : '',
+								position : 'bottom_left',
+								size : 20
+							},
+							nav : {
+								bg : '#eee',
+								stateColor : '#000',
+								stateSize : 18,
+								cancelBg : 'rgba(0,0,0,0)',
+								cancelColor : '#000',
+								cancelSize : 18,
+								finishBg : 'rgba(0,0,0,0)',
+								finishColor : '#000',
+								finishSize : 18
+							}
+						},
+						scrollToBottom : {
+							intervalTime : 3,
+							anim : true
+						},
+						exchange : true,
+						rotation : true
+					}, function(ret) {
+						if (ret) {
+							alert(JSON.stringify(ret));
+							var img = $("#img");
+							//获取图片路径
+							for (var i = 0; i < ret.list.length; i++) {
+								var imgs = $('<img src="' + ret.list[i].path + '" alt="" style="width: 100px;height: 100px;" />');
+								var imgPath = ret.list[i].path;
+								img.append(imgs);
+								commentOfGoodsImg.push(ret.list[i].thumbPath);
+								var imgName = imgPath.substring(imgPath.lastIndexOf("/") + 1);
+							}
+						}
+					});
+				});
+				
+				$("#add").click(function(){
+					var commentOfGoodsText = $("#commentOfGoodsText").val();
+					alert(commentOfGoodsText);
+					alert(commentOfGoodsImg);
+					if(commentOfGoodsText=="" || commentOfGoodsText==null){
+						api.alert({msg:"请输入评论内容！"});
+					}else if(commentOfGoodsImg==null || commentOfGoodsImg==undefined || commentOfGoodsImg==""){
+						api.alert({msg:"文本评论"});
+						api.ajax({
+	                        url:'http://101.201.122.173/CommentOfGoodsControl/saveCommentOfGoods.do',
+	                        method:'post',
+	                        values:{"CommentOfGoodsText":commentOfGoodsText},
+                        },function(ret,err){
+                        	if(ret){
+                        		api.alert({msg:JSON.stringify(ret)});
+                        	}else{
+                        		api.alert({msg:JSON.stringify(err)});
+                        	}
+                        });
+					}else{
+						api.alert({msg:"带图评论"});
+						api.ajax({
+	                        url:'http://101.201.122.173/CommentOfGoodsControl/saveCommentOfGoodsByPic.do',
+	                        method:'post',
+	                        values:{"CommentOfGoodsText":commentOfGoodsText},
+	                        files:{"upfile[]":commentOfGoodsImg}	
+                        },function(ret,err){
+                        	if(ret){
+                        		api.alert({msg:JSON.stringify(ret)});
+                        	}else{
+                        		api.alert({msg:JSON.stringify(err)});
+                        	}
+                        });
+					}
+				});
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,17 @@
+.footer div{
+	width: 25%;
+	float: left;
+	text-align: center;
+}
+
+.footer{
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+}
+
+.active{
+	color: brown;
+}
+

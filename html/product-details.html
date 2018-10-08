@@ -1,0 +1,467 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>产品详情</title>
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" href="../css/api.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<script type="text/javascript" src="../js/api.js"></script>
+		<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../js/boot.jquery.js"></script>
+		<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../js/slide.js"></script>
+		<style>
+			.Prod_tab li{
+				width: 30%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="produ">
+			<div class="container">
+				<div class="page_header">
+					<div class="page_heade">
+						<a href="javascript:history.go(-1)" class="pull-left page_head head"></a>
+						<span>产品</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="Prod_tab">
+				<ul>
+					<li id="classification">
+						产品分类<span class="glyphicon glyphicon-chevron-down chevron-down"></span>
+					</li>
+					<li id="sort">
+						智能排序<span class="glyphicon glyphicon-chevron-down chevron-down"></span>
+					</li>
+					<li id="reset">
+						重置参数
+					</li>
+				</ul>
+			</div>
+			<div class="prod_show" style="background: none;">
+				<div class="tab4" id="menu">
+					<div class="prod_item"style="background: white;width: 100%">
+						<ul id="type"></ul>
+					</div>
+				</div>
+			</div>
+			<div class="prod_show1"  style="background: none;">
+				<div class="tab4" id="order">
+					<div class="prod_item">
+						<ul>
+							<li class="prod_sel">
+								<a>产品价格</a>
+							</li>
+							<li>
+								<a>产品销量</a>
+							</li>
+							<li>
+								<a>上架时间</a>
+							</li>
+						</ul>
+					</div>
+					<div class="prod_list">
+						<div class="prod_list1 checked">
+							<p id="priceAsc">
+								价格升序
+							</p></hr>
+							<p id="priceDesc">
+								价格降序
+							</p>
+						</div>
+						<div class="prod_list1">
+							<p id="countAsc">
+								销量升序
+							</p>
+							<p id="countDesc">
+								销量降序
+							</p>
+						</div>
+						<div class="prod_list1">
+							<p id="GoodsDateAsc">
+								时间升序
+							</p>
+							<p id="GoodsDateDesc">
+								时间降序
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="Prod_center">
+				<div class="container">
+					<ul class="prod_navbar" id="product"></ul>
+				</div>
+			</div>
+		</div>
+		<script>
+			apiready = function() {
+				var goodTypeId = 0;
+				//重置参数
+				$("#reset").click(function() {
+					api.ajax({
+						url : 'http://101.201.122.173/GoodsInfoControl/queryGoodsInfo.do',
+						method : 'post'
+					}, function(ret, err) {
+						if (ret) {
+							//获取div
+							var ul = $("#product");
+							ul.find("li").remove();
+							for (var i = 0; i < ret.data.length; i++) {
+								var li = $('<li><a href="../html/Comm_details.html?goodsId=' + ret.data[i].goodsId + '"><p>' + '<img src="http://101.201.122.173/' + ret.data[i].goodsPic + '" /></p> ' + '<span>' + ret.data[i].goodsName + '</span></br> ' + '<span class="pord_money">特价：￥' + '<span>' + ret.data[i].goodsPrice + '</span></span> </a></li>');
+								ul.append(li);
+							}
+						} else {
+							api.alert({
+								msg : JSON.stringify(err)
+							});
+						}
+					});
+				});
+				//商品分类菜单
+				$("#classification").click(function() {
+					$("#menu").show();
+				});
+				//加载商品分类
+				api.ajax({
+					url : 'http://101.201.122.173/GoodsTypeControl/queryGoodsType.do',
+					method : 'post'
+				}, function(ret, err) {
+					if (ret) {
+						//获取div
+						var ul = $("#type");
+						$.each(ret.data, function(index, item) {
+							var li = $('<li style="border-bottom:1px solid #dddddd;"><a>' + item.goodsTypeName + '</a></li>');
+							//点击li事件
+							li.click(function() {
+								goodTypeId = item.goodsTypeId;
+								api.ajax({
+									url : 'http://101.201.122.173/GoodsInfoControl/queryGoodsInfoBy.do?goodstype=' + item.goodsTypeId + '',
+									method : 'post'
+								}, function(ret, err) {
+									if (ret) {
+										//获取div
+										var ul1 = $("#product");
+										ul1.find("li").remove();
+										for (var i = 0; i < ret.data.length; i++) {
+											var li = $('<li><a href="../html/Comm_details.html?goodsId=' + ret.data[i].goodsId + '"><p>' + '<img src="http://101.201.122.173/' + ret.data[i].goodsPic + '" /></p> ' + '<span>' + ret.data[i].goodsName + '</span></br> ' + '<span class="pord_money">特价：￥' + '<span>' + ret.data[i].goodsPrice + '</span></span> </a></li>');
+											ul1.append(li);
+										}
+										$("#menu").hide();
+									} else {
+										api.alert({
+											msg : JSON.stringify(err)
+										});
+									}
+								});
+							});
+							ul.append(li);
+						});
+					} else {
+						api.alert({
+							msg : JSON.stringify(err)
+						});
+					}
+				});
+				//加载商品信息
+				api.ajax({
+					url : 'http://101.201.122.173/GoodsInfoControl/queryGoodsInfo.do',
+					method : 'post'
+				}, function(ret, err) {
+					if (ret) {
+						//获取div
+						var ul = $("#product");
+						for (var i = 0; i < ret.data.length; i++) {
+							var li = $('<li><a href="../html/Comm_details.html?goodsId=' + ret.data[i].goodsId + '"><p>' + '<img src="http://101.201.122.173/' + ret.data[i].goodsPic + '" /></p> ' + '<span>' + ret.data[i].goodsName + '</span></br> ' + '<span class="pord_money">特价：￥' + '<span>' + ret.data[i].goodsPrice + '</span></span> </a></li>');
+							ul.append(li);
+						}
+					} else {
+						api.alert({
+							msg : JSON.stringify(err)
+						});
+					}
+				});
+				//显示sort菜单
+				$("#sort").click(function() {
+					$("#order").show();
+				});
+				/**
+				 * 价格升序
+				 */
+				$("#priceAsc").click(function() {
+					$("#order").hide();
+					if (goodTypeId == null || goodTypeId == "") {
+						api.ajax({
+							url : 'http://101.201.122.173/GoodsInfoControl/queryGoodsInfoBy.do?sortname=GoodsPrice&sortorder=asc',
+							method : 'post'
+						}, function(ret, err) {
+							if (ret) {
+								//获取div
+								var ul = $("#product");
+								ul.find("li").remove();
+								for (var i = 0; i < ret.data.length; i++) {
+									var li = $('<li><a href="../html/Comm_details.html?goodsId=' + ret.data[i].goodsId + '"><p>' + '<img src="http://101.201.122.173/' + ret.data[i].goodsPic + '" /></p> ' + '<span>' + ret.data[i].goodsName + '</span></br> ' + '<span class="pord_money">特价：￥' + '<span>' + ret.data[i].goodsPrice + '</span></span> </a></li>');
+									ul.append(li);
+								}
+							} else {
+								api.alert({
+									msg : JSON.stringify(err)
+								});
+							}
+						});
+					} else {
+						api.ajax({
+							url : 'http://101.201.122.173/GoodsInfoControl/queryGoodsInfoBy.do?sortname=GoodsPrice&sortorder=asc&goodstype=' + goodTypeId + '',
+							method : 'post'
+						}, function(ret, err) {
+							if (ret) {
+								//获取div
+								var ul = $("#product");
+								ul.find("li").remove();
+								for (var i = 0; i < ret.data.length; i++) {
+									var li = $('<li><a href="../html/Comm_details.html?goodsId=' + ret.data[i].goodsId + '"><p>' + '<img src="http://101.201.122.173/' + ret.data[i].goodsPic + '" /></p> ' + '<span>' + ret.data[i].goodsName + '</span></br> ' + '<span class="pord_money">特价：￥' + '<span>' + ret.data[i].goodsPrice + '</span></span> </a></li>');
+									ul.append(li);
+								}
+							} else {
+								api.alert({
+									msg : JSON.stringify(err)
+								});
+							}
+						});
+					}
+				});
+				/**
+				 * 价格降序
+				 */
+				$("#priceDesc").click(function() {
+					$("#order").hide();
+					if (goodTypeId == null || goodTypeId == "") {
+						api.ajax({
+							url : 'http://101.201.122.173/GoodsInfoControl/queryGoodsInfoBy.do?sortname=GoodsPrice&sortorder=desc',
+							method : 'post'
+						}, function(ret, err) {
+							if (ret) {
+								//获取div
+								var ul = $("#product");
+								ul.find("li").remove();
+								for (var i = 0; i < ret.data.length; i++) {
+									var li = $('<li><a href="../html/Comm_details.html?goodsId=' + ret.data[i].goodsId + '"><p>' + '<img src="http://101.201.122.173/' + ret.data[i].goodsPic + '" /></p> ' + '<span>' + ret.data[i].goodsName + '</span></br> ' + '<span class="pord_money">特价：￥' + '<span>' + ret.data[i].goodsPrice + '</span></span> </a></li>');
+									ul.append(li);
+								}
+							} else {
+								api.alert({
+									msg : JSON.stringify(err)
+								});
+							}
+						});
+					} else {
+						api.ajax({
+							url : 'http://101.201.122.173/GoodsInfoControl/queryGoodsInfoBy.do?sortname=GoodsPrice&sortorder=desc&goodstype=' + goodTypeId + '',
+							method : 'post'
+						}, function(ret, err) {
+							if (ret) {
+								//获取div
+								var ul = $("#product");
+								ul.find("li").remove();
+								for (var i = 0; i < ret.data.length; i++) {
+									var li = $('<li><a href="../html/Comm_details.html?goodsId=' + ret.data[i].goodsId + '"><p>' + '<img src="http://101.201.122.173/' + ret.data[i].goodsPic + '" /></p> ' + '<span>' + ret.data[i].goodsName + '</span></br> ' + '<span class="pord_money">特价：￥' + '<span>' + ret.data[i].goodsPrice + '</span></span> </a></li>');
+									ul.append(li);
+								}
+							} else {
+								api.alert({
+									msg : JSON.stringify(err)
+								});
+							}
+						});
+					}
+				});
+				/**
+				 * 销量降序
+				 */
+				$("#countDesc").click(function() {
+					$("#order").hide();
+					if (goodTypeId == null || goodTypeId == "") {
+						api.ajax({
+							url : 'http://101.201.122.173/GoodsInfoControl/queryGoodsInfoBy.do?sortname=GoodsCount&sortorder=desc',
+							method : 'post'
+						}, function(ret, err) {
+							if (ret) {
+								//获取div
+								var ul = $("#product");
+								ul.find("li").remove();
+								for (var i = 0; i < ret.data.length; i++) {
+									var li = $('<li><a href="../html/Comm_details.html?goodsId=' + ret.data[i].goodsId + '"><p>' + '<img src="http://101.201.122.173/' + ret.data[i].goodsPic + '" /></p> ' + '<span>' + ret.data[i].goodsName + '</span></br> ' + '<span class="pord_money">特价：￥' + '<span>' + ret.data[i].goodsPrice + '</span></span> </a></li>');
+									ul.append(li);
+								}
+							} else {
+								api.alert({
+									msg : JSON.stringify(err)
+								});
+							}
+						});
+					} else {
+						api.ajax({
+							url : 'http://101.201.122.173/GoodsInfoControl/queryGoodsInfoBy.do?sortname=GoodsCount&sortorder=desc&goodstype=' + goodTypeId + '',
+							method : 'post'
+						}, function(ret, err) {
+							if (ret) {
+								//获取div
+								var ul = $("#product");
+								ul.find("li").remove();
+								for (var i = 0; i < ret.data.length; i++) {
+									var li = $('<li><a href="../html/Comm_details.html?goodsId=' + ret.data[i].goodsId + '"><p>' + '<img src="http://101.201.122.173/' + ret.data[i].goodsPic + '" /></p> ' + '<span>' + ret.data[i].goodsName + '</span></br> ' + '<span class="pord_money">特价：￥' + '<span>' + ret.data[i].goodsPrice + '</span></span> </a></li>');
+									ul.append(li);
+								}
+							} else {
+								api.alert({
+									msg : JSON.stringify(err)
+								});
+							}
+						});
+					}
+				});
+				/**
+				 * 销量升序
+				 */
+				$("#countAsc").click(function() {
+					$("#order").hide();
+					if (goodTypeId == null || goodTypeId == "") {
+						api.ajax({
+							url : 'http://101.201.122.173/GoodsInfoControl/queryGoodsInfoBy.do?sortname=GoodsCount&sortorder=asc',
+							method : 'post'
+						}, function(ret, err) {
+							if (ret) {
+								//获取div
+								var ul = $("#product");
+								ul.find("li").remove();
+								for (var i = 0; i < ret.data.length; i++) {
+									var li = $('<li><a href="../html/Comm_details.html?goodsId=' + ret.data[i].goodsId + '"><p>' + '<img src="http://101.201.122.173/' + ret.data[i].goodsPic + '" /></p> ' + '<span>' + ret.data[i].goodsName + '</span></br> ' + '<span class="pord_money">特价：￥' + '<span>' + ret.data[i].goodsPrice + '</span></span> </a></li>');
+									ul.append(li);
+								}
+							} else {
+								api.alert({
+									msg : JSON.stringify(err)
+								});
+							}
+						});
+					} else {
+						api.ajax({
+							url : 'http://101.201.122.173/GoodsInfoControl/queryGoodsInfoBy.do?sortname=GoodsCount&sortorder=asc&goodstype=' + goodTypeId + '',
+							method : 'post'
+						}, function(ret, err) {
+							if (ret) {
+								//获取div
+								var ul = $("#product");
+								ul.find("li").remove();
+								for (var i = 0; i < ret.data.length; i++) {
+									var li = $('<li><a href="../html/Comm_details.html?goodsId=' + ret.data[i].goodsId + '"><p>' + '<img src="http://101.201.122.173/' + ret.data[i].goodsPic + '" /></p> ' + '<span>' + ret.data[i].goodsName + '</span></br> ' + '<span class="pord_money">特价：￥' + '<span>' + ret.data[i].goodsPrice + '</span></span> </a></li>');
+									ul.append(li);
+								}
+							} else {
+								api.alert({
+									msg : JSON.stringify(err)
+								});
+							}
+						});
+					}
+				});
+				/**
+				 * 上架升序
+				 */
+				$("#GoodsDateAsc").click(function() {
+					$("#order").hide();
+					if (goodTypeId == null || goodTypeId == "") {
+						api.ajax({
+							url : 'http://101.201.122.173/GoodsInfoControl/queryGoodsInfoBy.do?sortname=GoodsDate&sortorder=asc',
+							method : 'post'
+						}, function(ret, err) {
+							if (ret) {
+								//获取div
+								var ul = $("#product");
+								ul.find("li").remove();
+								for (var i = 0; i < ret.data.length; i++) {
+									var li = $('<li><a href="../html/Comm_details.html?goodsId=' + ret.data[i].goodsId + '"><p>' + '<img src="http://101.201.122.173/' + ret.data[i].goodsPic + '" /></p> ' + '<span>' + ret.data[i].goodsName + '</span></br> ' + '<span class="pord_money">特价：￥' + '<span>' + ret.data[i].goodsPrice + '</span></span> </a></li>');
+									ul.append(li);
+								}
+							} else {
+								api.alert({
+									msg : JSON.stringify(err)
+								});
+							}
+						});
+					} else {
+						api.ajax({
+							url : 'http://101.201.122.173/GoodsInfoControl/queryGoodsInfoBy.do?sortname=GoodsDate&sortorder=asc&goodstype=' + goodTypeId + '',
+							method : 'post'
+						}, function(ret, err) {
+							if (ret) {
+								//获取div
+								var ul = $("#product");
+								ul.find("li").remove();
+								for (var i = 0; i < ret.data.length; i++) {
+									var li = $('<li><a href="../html/Comm_details.html?goodsId=' + ret.data[i].goodsId + '"><p>' + '<img src="http://101.201.122.173/' + ret.data[i].goodsPic + '" /></p> ' + '<span>' + ret.data[i].goodsName + '</span></br> ' + '<span class="pord_money">特价：￥' + '<span>' + ret.data[i].goodsPrice + '</span></span> </a></li>');
+									ul.append(li);
+								}
+							} else {
+								api.alert({
+									msg : JSON.stringify(err)
+								});
+							}
+						});
+					}
+				});
+				/**
+				 * 上架降序
+				 */
+				$("#GoodsDateDesc").click(function() {
+					$("#order").hide();
+					if (goodTypeId == null || goodTypeId == "") {
+						api.ajax({
+							url : 'http://101.201.122.173/GoodsInfoControl/queryGoodsInfoBy.do?sortname=GoodsDate&sortorder=desc',
+							method : 'post'
+						}, function(ret, err) {
+							if (ret) {
+								//获取div
+								var ul = $("#product");
+								ul.find("li").remove();
+								for (var i = 0; i < ret.data.length; i++) {
+									var li = $('<li><a href="../html/Comm_details.html?goodsId=' + ret.data[i].goodsId + '"><p>' + '<img src="http://101.201.122.173/' + ret.data[i].goodsPic + '" /></p> ' + '<span>' + ret.data[i].goodsName + '</span></br> ' + '<span class="pord_money">特价：￥' + '<span>' + ret.data[i].goodsPrice + '</span></span> </a></li>');
+									ul.append(li);
+								}
+							} else {
+								api.alert({
+									msg : JSON.stringify(err)
+								});
+							}
+						});
+					} else {
+						api.ajax({
+							url : 'http://101.201.122.173/GoodsInfoControl/queryGoodsInfoBy.do?sortname=GoodsDate&sortorder=desc&goodstype=' + goodTypeId + '',
+							method : 'post'
+						}, function(ret, err) {
+							if (ret) {
+								//获取div
+								var ul = $("#product");
+								ul.find("li").remove();
+								for (var i = 0; i < ret.data.length; i++) {
+									var li = $('<li><a href="../html/Comm_details.html?goodsId=' + ret.data[i].goodsId + '"><p>' + '<img src="http://101.201.122.173/' + ret.data[i].goodsPic + '" /></p> ' + '<span>' + ret.data[i].goodsName + '</span></br> ' + '<span class="pord_money">特价：￥' + '<span>' + ret.data[i].goodsPrice + '</span></span> </a></li>');
+									ul.append(li);
+								}
+							} else {
+								api.alert({
+									msg : JSON.stringify(err)
+								});
+							}
+						});
+					}
+				});
+			};
+		</script>
+	</body>
+</html>

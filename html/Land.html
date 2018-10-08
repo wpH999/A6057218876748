@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>登陆</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/api.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<link rel="stylesheet" href="../layer/skin/default/layer.css" />
+		<script type="text/javascript" src="../js/api.js"></script>
+		<script type="text/javascript" src="../js/boot.jquery.js"></script>
+		<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../js/slide.js"></script>
+	</head>
+	<body>
+		<div class="phon-header land">
+			<div class="container">
+				<div class="land-left">
+					<a href="javascript:history.go(-1)" class="page_land pull-left glyphicon glyphicon-chevron-left"></a><span>登陆</span>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="tab3">
+				<div class="Phone">
+					<ul>
+						<li class="phone_sel">
+							密码登陆登陆
+						</li>
+						<li>
+							验证码登陆
+						</li>
+					</ul>
+				</div>
+				<div class="form-item">
+					<div class="Phone_list checked">
+						<div class="input-group land_group">
+							<input type="text" class="form-control" id="phone"  placeholder="请输入手机号">
+						</div>
+						<div class="input-group land_group">
+							<input type="text" class="form-control" id="pwd"  placeholder="请输入密码">
+						</div>
+						<!--	<div class="pull-right land_right">
+						<a  href="../html/updatePwd.html">找回密码</a>
+						</div>-->
+						<div class="input-group land_group group1">
+							<!--<a href="page_home.html">-->
+							<input type="button" class="form-control" id="userLogin" value="用户登陆">
+							</a>
+						</div>
+						<div class="input-group land_group group2">
+							<a href="register.html">
+							<input type="button" class="form-control" value="没有账户？立即注册">
+							</a>
+						</div>
+					</div>
+					<div class="Phone_list">
+						<div class="input-group land_group">
+							<input type="text" class="form-control" id="MPhone" placeholder="请输入手机号">
+						</div>
+						<div class="input-group land_group">
+							<input type="text" class="form-control" id="code" placeholder="请输入验证码">
+							<div class="regin1">
+								<button class="btn" id="getCode">
+									获取验证码
+								</button>
+							</div>
+						</div>
+						<div class="input-group land_group group1">
+							<input type="button" class="form-control" id="login" value="登陆">
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../layer/layer.js"></script>
+		<script>
+			var thisURL=document.URL;
+			alert(thisURL);
+			apiready = function() {
+				//				var phoneInfo = api.require('phoneInfo');
+				//				phoneInfo.getBaseInfo(function(ret, err) {
+				//					alert(" shfghj");
+				//					if (ret.status) {
+				//					alert(ret.id);
+				//						api.alert({
+				//							msg : '品牌：' + ret.brand + '\r\n' + '型号：' + ret.model + '\r\n' + '制造商：' + ret.manufacturer + '\r\n' + 'Android版本：' + ret.version + '\r\n' + 'AndroidSDK版本：' + ret.sdkVersion + '\r\n' + '设备串号：' + ret.id + '\r\n' + 'Mac地址：' + ret.macAddress + '\r\n' + '开机时间：' + ret.bootTime + '分钟'
+				//						});
+				//					} else {
+				//						api.alert({
+				//							msg : err.msg
+				//						});
+				//					}
+				//				});
+				var type = 0;
+				//密码登录
+				$("#userLogin").click(function() {
+					//获取手机号
+					var phone = $("#phone").val();
+					//获取密码
+					var pwd = $("#pwd").val();
+					//获取设备id
+					var app = "44545455";
+					type = 0;
+					api.ajax({
+						method : "post",
+						url : "http://101.201.122.173/MemberControl/login.do?memberPhone=" + phone + "&memberCode=" + pwd + "&loginType=" + type + "&appid=" + app + ""
+					}, function(ret, err) {//获取集合
+						if (ret) {
+							if (ret.errorCode == 0) {
+								//存储登录的会员id
+								$api.setStorage('memberId', ret.data.memberId);
+								//存储登录的安全码
+								$api.setStorage('token', ret.data.safeCode.safeCodeValue);
+								window.location.href = "../html/home.html";
+							} else {
+								window.location.href = "../html/Land.html";
+							}
+						} else {
+							api.alert({
+								msg : JSON.stringify(ret)
+							});
+						}
+					});
+				});
+				//获取验证码
+				$("#getCode").click(function() {
+					//获取手机号
+					var MPhone = $("#MPhone").val();
+					api.ajax({
+						method : "post",
+						url : "http://101.201.122.173/SendsmsControl/Sendsms.do?mobile=" + MPhone + ""
+					}, function(ret, err) {//获取集合
+						if (ret) {
+							if (ret.errorCode == 0) {
+								layer.msg("短信已发送", {
+									icon : 1
+								});
+							} else {
+								layer.msg("短信发送失败", {
+									icon : 2
+								});
+							}
+						} else {
+							api.alert({
+								msg : JSON.stringify(ret)
+							});
+						}
+					});
+				});
+				//短信登录
+				$("#login").click(function() {
+					//获取验证码
+					var code = $("#code").val();
+					//获取手机号
+					var MPhone = $("#MPhone").val();
+					type = 1;
+					//获取设备id
+					var app = "44545455";
+					api.ajax({
+						type : "post",
+						url : "http://101.201.122.173/MemberControl/login.do?memberPhone=" + MPhone + "&memberCode=" + code + "&loginType=" + type + "&appid=" + app + ""
+					}, function(ret, err) {//获取集合
+						if (ret) {
+							if (ret.errorCode == 0) {
+								//存储登录的会员id
+								$api.setStorage('memberId', ret.data.memberId);
+								//存储登录的安全码
+								$api.setStorage('token', ret.data.safeCode.safeCodeValue);
+								window.location.href = "../html/home.html";
+								//								if (url == "../html/Comm_details.html") {
+								//									//跳转到商品详情页面
+								//									window.location = "../html/Comm_details.html?goodsId=" + goodsId + "&memberId=" + data.data.memberId + "&SafeCodeValue=" + data.data.safeCode.safeCodeValue + "";
+								//								} else if (url == "file:///D:/zhoulan/company/marry/jhl/index.html") {
+								//									//购物车页面
+								//									window.location = "file:///D:/zhoulan/company/marry/jhl/index.html?token=" + data.data.safeCode.safeCodeValue;
+								//								}
+							} else {
+								window.location = "../html/Land.html";
+							}
+						} else {
+							api.alert({
+								msg : JSON.stringify(ret)
+							});
+						}
+					});
+				});
+			};
+		</script>
+	</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>商品详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/api.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<link rel="stylesheet" href="../layer/skin/default/layer.css" />
+		<script type="text/javascript" src="../js/api.js"></script>
+		<script type="text/javascript" src="../js/boot.jquery.js"></script>
+		<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../js/show.js"></script>
+	</head>
+	<body>
+		<div class="produ">
+			<div class="container">
+				<div class="page_header">
+					<div class="page_heade">
+						<a href="javascript:history.go(-1)" class="pull-left"><span class="glyphicon glyphicon-chevron-left page_head head"></span></a>
+						<span>商品详情</span>
+						<span class="glyphicon glyphicon-shopping-cart pull-right page_head head"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="tab">
+			<ul class="Commod_tab">
+				<li class="Commod_sel">
+					商品
+				</li>
+				<li id="detail">
+					详细
+				</li>
+				<li id="pingjia">
+					评价
+				</li>
+			</ul>
+			<div class="Commod_center">
+				<span class="Commod"> <span class="Commod_img"><img src="../image/default.jpg"  id="img"/></span> <span class="Commod_title" id="name">产品text</span> </span>
+				<span class="Commod_xianl"> <span class="pull-left">已售<span id="count"> 20</span>件</span> <span class="pull-right">￥<span id="price">32.00</span></span> </span>
+				<span class="Commod_xianl1"> <span class="pull-left">产品参数/DETALLS</span> <span class="pull-right glyphicon glyphicon-chevron-down"></span> </span>
+				<span class="Commod_xianl2" id="param"></span>
+				<span class="Commod_xianl3"> <span class="pull-left">产品	评价/COMMENT</span> <span class="pull-right glyphicon glyphicon-chevron-down"></span> </span>
+				<span class="Commod_xianl4" id="pinglun"><a class="pull-right Commod_jies" style="margin-top: 125px;position: relative;" id="many">查看更多评论</a></span>
+			</div>
+			<div class="hide" id="goodsDetail"></div>
+			<div class="hide">
+				<span> <span class="Commod_xianl5" id="contentAll"> </span>
+			</div>
+		</div>
+		<div class="Comm_footer">
+			<div id="collections">
+				收藏
+			</div>
+			<div id="carts">
+				加入购物车
+			</div>
+			<div id="buy">
+				立即购买
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../layer/layer.js"></script>
+	<script>
+		//取得goodsId
+		var thisURL = document.URL;
+		var getval = thisURL.split('?')[1];
+		var goodsId = getval.split("=")[1];
+		apiready = function() {
+			//取出会员id
+			var memberId = $api.getStorage('memberId');
+			api.ajax({
+				url : 'http://101.201.122.173/GoodsInfoControl/queryGoodsById.do?goodsId=' + goodsId,
+				method : 'post'
+			}, function(ret, err) {
+				if (ret) {
+					$("#img").attr("src", "http://101.201.122.173/" + ret.data.goodsPic + "");
+					$("#name").text(ret.data.goodsName);
+					$("#count").text(ret.data.goodsCount);
+					$("#price").text(ret.data.goodsPrice);
+					//商品参数
+					var goodsParam = [];
+					goodsParam = ret.data.goodsParamList;
+					var param = $("#param");
+					if (goodsParam == null || goodsParam == "") {
+						var p = $('<p>暂时没有参数.....</p>');
+						param.append(p);
+					} else {
+						for (var j = 0; j < goodsParam.length; j++) {
+							var p = $('<p>' + goodsParam[j].paramKey + '：' + goodsParam[j].paramValue + '</p>');
+							param.append(p);
+						}
+					}
+					//  收藏夹
+					$("#collections").click(function() {
+					alert(memberId);
+						if (memberId == null || memberId == "") {
+							//登录页面
+							window.location = "../html/Land.html";
+						} else {
+							//添加到收藏夹
+							api.ajax({
+								url : 'http://101.201.122.173/CollectionInfoControl/saveCollectionInfo.do?memberId=' + memberId + '&goodsId=' + ret.data.goodsId + '',
+								method : 'post'
+							}, function(ret, err) {
+								if (ret) {
+									if (ret.errorCode == 0) {
+										layer.msg('收藏成功！', {
+											icon : 1
+										});
+									} else {
+										layer.msg('收藏失败！', {
+											icon : 2
+										});
+									}
+								} else {
+									api.alert({
+										msg : JSON.stringify(ret)
+									});
+								}
+							});
+						}
+					});
+					//加入购物车
+					$("#carts").click(function() {
+						if (memberId == null || memberId == "") {
+							//登录页面
+							window.location = "../html/Land.html";
+						} else {
+							//购物车页面
+							window.location = "../html/addCart.html?goodsId=" + ret.data.goodsId;
+						}
+					});
+					//立即购买
+					$("#buy").click(function() {
+						if (memberId == null || memberId == "") {
+							//登录页面
+							window.location = "../html/Land.html";
+						} else {
+							//购买页面
+							window.location = "../html/buy.html?goodsId=" + ret.data.goodsId;
+						}
+					});
+					//点击详情
+					$("#detail").click(function() {
+						//获取商品详情
+						var goodsDetail = ret.data.goodsDetail;
+						//拆分商品详情
+						var str = [];
+						str = goodsDetail.split(";");
+						var div = $("#goodsDetail");
+						for (var i = 0; i < str.length; i++) {
+							var span = $('<span class="xiangxi" ><img src="http://101.201.122.173/' + str[i] + '"></span>');
+							div.append(span);
+						}
+					});
+					//点击评论
+					$("#pingjia").click(function() {
+						api.ajax({
+							method : "post",
+							url : "http://101.201.122.173/CommentOfGoodsControl/queryCommentOfGoods.do?goodsId=" + ret.data.goodsId
+						}, function(ret, err) {//获取集合
+							if (ret) {
+								var contentAll = $("#contentAll");
+								if (ret.data.length <= 0) {
+									var span = $('<span class="Commod_pingj">暂时没有评论......</span>');
+									contentAll.append(span);
+								} else {
+									for (var i = 0; i < ret.data.length; i++) {
+										var span = $('<span class="Commod_pingj"> <span class="pull-left Commod_tox"><img src="http://101.201.122.173/' + ret.data[i].memberDetail.memberPic + '"></span> <span class="pull-left Commod_ping">' + ret.data[i].memberDetail.pickName + '</span> <span class="pull-right Commod_ping date">' + ret.data[i].commentOfGoodsTime + '</span> </span><span class="Commod_pingg">' + ret.data[i].commentOfGoodsText + '</span>');
+										contentAll.append(span);
+									}
+								}
+							} else {
+								api.alert({
+									msg : JSON.stringify(err)
+								});
+							}
+						});
+					});
+				} else {
+					api.alert({
+						msg : JSON.stringify(err)
+					});
+				}
+			});
+			//评论根据商品id
+			api.ajax({
+				method : "post",
+				url : "http://101.201.122.173/CommentOfGoodsControl/queryCommentOfGoods.do?goodsId=" + goodsId
+			}, function(ret, err) {//获取集合
+				if (ret) {
+					var pinglun = $("#pinglun");
+					if (ret.data.length <= 0) {
+						var span = $('<span class="Commod_pingj">暂时没有评论......</span>');
+						pinglun.append(span);
+					} else {
+						for (var i = 0; i < ((ret.data.length) - (ret.data.length)) + 2; i++) {
+							var span = $('<span class="Commod_pingj"> <span class="pull-left Commod_tox"><img src="http://101.201.122.173/' + ret.data[i].memberDetail.memberPic + '" /></span>' + '<span class="pull-left Commod_ping">' + ret.data[i].memberDetail.pickName + '</span><span class="pull-right Commod_ping">' + ret.data[i].commentOfGoodsTime + '</span>' + '</span><span style="margin-left:40px;margin-bottom:10px;">' + ret.data[i].commentOfGoodsText + '</span>');
+							pinglun.append(span);
+						}
+					}
+					//点击更多
+					$("#many").click(function() {
+						$("#many").hide();
+						pinglun.find("span").remove();
+						if (ret.data.length <= 0) {
+							var span = $('<span class="Commod_pingj">暂时没有评论......</span>');
+							pinglun.append(span);
+						} else {
+							for (var i = 0; i < ret.data.length; i++) {
+								var span = $('<span class="Commod_pingj"> <span class="pull-left Commod_tox"><img src="http://101.201.122.173/' + ret.data[i].memberDetail.memberPic + '" /></span>' + '<span class="pull-left Commod_ping">' + ret.data[i].memberDetail.pickName + '</span><span class="pull-right Commod_ping">' + ret.data[i].commentOfGoodsTime + '</span>' + '</span><span style="margin-left:40px;margin-bottom:10px;">' + ret.data[i].commentOfGoodsText + '</span>');
+								pinglun.append(span);
+							}
+						}
+					});
+				} else {
+					api.alert({
+						msg : JSON.stringify(err)
+					});
+				}
+			});
+		};
+	</script>
+</html>

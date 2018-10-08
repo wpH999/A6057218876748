@@ -1,0 +1,297 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>我的订单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/api.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<link rel="stylesheet" href="../css/cart.css" />
+		<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../layer/layer.js"></script>
+		<script type="text/javascript" src="../js/api.js"></script>
+		<script type="text/javascript" src="../js/boot.jquery.js"></script>
+		<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../js/slide.js"></script>
+	</head>
+	<body>
+		<div class="Collect_header">
+			<div class="container">
+				<div class="page_header">
+					<div class="page_heade">
+						<a href="javascript:history.go(-1)" class="pull-left"><span class="glyphicon glyphicon-chevron-left page_head"></span></a>
+						<span>我的订单</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tab1">
+			<div class="tab-nav">
+				<ul>
+					<li class="tab-sel" style="width: 50%;">
+						商品订单
+					</li>
+					<li style="width: 50%;">
+						预约订单
+					</li>
+				</ul>
+			</div>
+			<div class="tab-content">
+				<!--商品订单-->
+				<div class="list-item checked">
+					<div class="container">
+						<ul class="order_center" id="goodsOrder"></ul>
+					</div>
+				</div>
+				<!--预约订单-->
+				<div class="list-item">
+					<div class="order_list">
+						<p><img src="../image/order.jpg" />
+						</p>
+						<p class="order_titl">
+							你还没有相关的订单
+						</p>
+						<p class="order_sub">
+							可以去看看有哪些想买的
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div  class="o_orde">
+			<div class="o_footer">
+				<div style="color:blue;">
+					订单支付
+				</div>
+				<div id="weChat">
+					微信支付
+				</div>
+				<div id="apply">
+					支付宝支付
+				</div>
+				<div id="quxiao">
+					取消
+				</div>
+			</div>
+		</div>
+		<script>
+			var thisUrl = document.URL;
+			var getval = thisUrl.split('?')[1];
+			var token = getval.split("=")[1];
+			apiready = function() {
+				api.ajax({
+					url : 'http://101.201.122.173/OrderOfGoodsDetailControl/queryOrderOfGoods.do?token=' + token,
+					method : 'post'
+				}, function(ret, err) {
+					if (ret) {
+						if (ret.errorCode == 0) {
+							//获取ul
+							var ul = $("#goodsOrder");
+							if (ret.data.length <= 0) {
+								var li = $('<li>你还没有订单</li>');
+								ul.append(li);
+							} else {
+								for (var i = 0; i < ret.data.length; i++) {
+									if (ret.data[i].orderInfoStatus.orderInfoStatusDetail == "交易关闭") {
+										var li = $('<li><a><span hidden>' + ret.data[i].orderOfGoodsDetailId + '</span><div class="order_img pull-left"><img src="http://101.201.122.173/' + ret.data[i].goodsInfo.goodsPic + '" /></div>' + '<div class="pull-right" style="padding-left: 15px;width: 230px"><span class="pull-right" style="color:red;">' + ret.data[i].orderInfoStatus.orderInfoStatusDetail + ' </span>' + '<p class="order_title">' + ret.data[i].goodsInfo.goodsName + '</p><p class="order_yanse">' + ret.data[i].goodsParameter + '</p>' + '<p class="order_yanse">订单号<span>' + ret.data[i].orderOfGoodsNum + '</span></p><p class="order_yanse">' + ret.data[i].orderOfGoods.orderOfGoodsTime + '</p>' + '<p class="order_mony">数量：' + ret.data[i].goodsCount + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + '总价：' + ret.data[i].goodsPrice + '</p></div>' + '<p class="order_gengduo pull-right" style=""><span data-type="del">删除订单</span></p> </a></li>');
+										ul.append(li);
+									}
+									if (ret.data[i].orderInfoStatus.orderInfoStatusDetail == "待支付") {
+										var li = $('<li><a><span hidden>' + ret.data[i].orderOfGoodsDetailId + '</span><div class="order_img pull-left"><img src="http://101.201.122.173/' + ret.data[i].goodsInfo.goodsPic + '" /></div>' + '<div class="pull-right" style="padding-left: 15px;width: 230px"><span class="pull-right" style="color:red;">' + ret.data[i].orderInfoStatus.orderInfoStatusDetail + ' </span>' + '<p class="order_title">' + ret.data[i].goodsInfo.goodsName + '</p><p class="order_yanse">' + ret.data[i].goodsParameter + '</p>' + '<p class="order_yanse">订单号<span>' + ret.data[i].orderOfGoodsNum + '</span></p><p class="order_yanse">' + ret.data[i].orderOfGoods.orderOfGoodsTime + '</p>' + '<p class="order_mony">数量：' + ret.data[i].goodsCount + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + '总价：' + ret.data[i].goodsPrice + '</p></div>' + '<p class="order_gengduo pull-right" style=""><span data-type="cancel">取消订单</span><span data-type="pay">付款</span></p> </a></li>');
+										ul.append(li);
+									}
+									if (ret.data[i].orderInfoStatus.orderInfoStatusDetail == "待评价") {
+										var li = $('<li><a><span hidden>' + ret.data[i].orderOfGoodsDetailId + '</span><div class="order_img pull-left"><img src="http://101.201.122.173/' + ret.data[i].goodsInfo.goodsPic + '" /></div>' + '<div class="pull-right" style="padding-left: 15px;width: 230px"><span class="pull-right" style="color:red;">' + ret.data[i].orderInfoStatus.orderInfoStatusDetail + ' </span>' + '<p class="order_title">' + ret.data[i].goodsInfo.goodsName + '</p><p class="order_yanse">' + ret.data[i].goodsParameter + '</p>' + '<p class="order_yanse">订单号<span>' + ret.data[i].orderOfGoodsNum + '</span></p><p class="order_yanse">' + ret.data[i].orderOfGoods.orderOfGoodsTime + '</p>' + '<p class="order_mony">数量：' + ret.data[i].goodsCount + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + '总价：' + ret.data[i].goodsPrice + '</p></div>' + '<p class="order_gengduo pull-right" style=""><span data-type="del">删除订单</span><span data-type="comment">评价</span></p> </a></li>');
+										ul.append(li);
+									}
+								}
+								//找到span
+								ul.find("span").click(function() {
+									//找到data-type属性
+									var type = $(this).attr("data-type");
+									/**
+									 * 删除
+									 */
+									if (type == "del") {
+										//获取id
+										var id = $(this).parents("li").find("span:eq(0)").text();
+										api.ajax({
+											url : 'http://101.201.122.173/OrderOfGoodsDetailControl/removeOrderOfGoods.do?token=' + token + '&orderOfGoodsDetailId=' + id + '',
+											method : 'post'
+										}, function(ret, err) {
+											if (ret) {
+												if (ret.errorCode == 0) {
+													layer.msg(ret.data, {
+														icon : 1
+													});
+													window.location = "../html/Order.html?token=" + token;
+												} else {
+													layer.msg(ret.data, {
+														icon : 2
+													});
+												}
+											} else {
+												api.alert({
+													msg : JSON.stringify(err)
+												});
+											}
+										});
+									}
+									/**
+									 * 取消订单
+									 */
+									if (type == "cancel") {
+										//获取id
+										var id = $(this).parents("li").find("span:eq(0)").text();
+										api.ajax({
+											url : 'http://101.201.122.173/OrderOfGoodsDetailControl/cancleOrderOfGoods.do?token=' + token + '&orderOfGoodsDetailId=' + id + '',
+											method : 'post'
+										}, function(ret, err) {
+											if (ret) {
+												if (ret.errorCode == 0) {
+													layer.msg(ret.data, {
+														icon : 1
+													});
+													window.location = "../html/Order.html?token=" + token;
+												} else {
+													layer.msg(ret.data, {
+														icon : 2
+													});
+												}
+											} else {
+												api.alert({
+													msg : JSON.stringify(err)
+												});
+											}
+										});
+									}
+									/**
+									 * 付款
+									 */
+									if (type == "pay") {
+										//显示订单支付
+										$(".o_orde").show();
+									}
+									/**
+									 * 评价
+									 */
+									if (type == "comment") {
+										window.location = "../html/addComment.html";
+									}
+									//微信支付
+									$("#weChat").click(function() {
+										var orderOfGoodsDetailIds = $(this).parents("li").find("span:eq(0)").text();
+										//进度条
+										// api.showProgress({});
+										api.ajax({
+											url : 'http://101.201.122.173/WxpayControl/WxpayTo.do',
+											method : 'post',
+											data : {
+												values : {
+													token : token,
+													orderOfGoodsDetailIds : orderOfGoodsDetailIds
+												}
+											}
+										}, function(ret, err) {
+											if (ret) {
+												if (ret.errorCode == 0) {
+													api.alert({
+														msg : JSON.stringify(ret)
+													});
+													var weiXin = api.require('weiXin');
+													weiXin.payOrder({
+														orderId : ret.data.prepayid,
+														partnerId : ret.data.partnerid,
+														nonceStr : ret.data.noncestr,
+														timeStamp : ret.data.timestamp,
+														package : ret.data.package,
+														sign : ret.data.sign
+													}, function(ret, err) {
+														if (ret.status) {
+														} else {
+															api.alert({
+																msg : err.msg
+															});
+														}
+													});
+												} else {
+													layer.msg("失败！", {
+														icon : 2
+													});
+												}
+											} else {
+												api.alert({
+													msg : JSON.stringify(err)
+												});
+											}
+										});
+									});
+									/**
+									 *支付宝支付
+									 */
+									$("#apply").click(function() {
+										var orderOfGoodsDetailIds = $(this).parents("li").find("span:eq(0)").text();
+										api.ajax({
+											url : 'http://101.201.122.173/AlipayControl/alipayTo.do?token=' + token + '&orderOfGoodsDetailIds=' + orderOfGoodsDetailIds + '',
+											method : 'post'
+										}, function(ret, err) {
+											if (ret) {
+												if (ret.errorCode == 0) {
+													var aliPay = api.require('aliPay');
+													aliPay.payOrder({
+														orderInfo : ret.data
+													}, function(ret, err) {
+													});
+												} else {
+													layer.msg("失败！", {
+														icon : 2
+													});
+												}
+											} else {
+												api.alert({
+													msg : JSON.stringify(ret)
+												});
+											}
+										});
+									});
+									//取消
+									$("#quxiao").click(function() {
+										var orderOfGoodsDetailIds = $(this).parents("li").find("span:eq(0)").text();
+										api.ajax({
+											url : 'http://101.201.122.173/OrderOfGoodsDetailControl/cancleOrderOfGoods.do？token=' + token + '&orderOfGoodsDetailId=' + orderOfGoodsDetailIds + '',
+											method : 'post'
+										}, function(ret, err) {
+											if (ret) {
+												alert(ret.errorCode);
+												if (ret.errorCode == 0) {
+													window.location = "../html/Order.html";
+												} else {
+													layer.msg("取消失败！", {
+														icon : 2
+													});
+												}
+											} else {
+												api.alert({
+													msg : JSON.stringify(ret)
+												});
+											}
+										});
+									});
+								});
+							}
+						} else {
+							layer.msg(ret.data, {
+								icon : 2
+							});
+						}
+					} else {
+						api.alert({
+							msg : JSON.stringify(err)
+						});
+					}
+				});
+			};
+		</script>
+	</body>
+</html>

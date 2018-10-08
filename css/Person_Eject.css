@@ -1,0 +1,201 @@
+.div_dispay {
+	position: relative;
+}
+
+.show_list,
+.show_nickname,
+.show_Gender,
+.show_Fullname,
+.show_Birth,
+.show_wedding{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	background: rgba(0, 0, 0, 0.5);
+	transition: 0.5s;
+	z-index: 999;
+}
+
+.show_list {
+	display: none;
+}
+
+.show_nickname {
+	display: none;
+}
+
+.show_Gender{
+	display: none;
+}
+
+.show_Fullname{
+	display: none;
+}
+
+.show_Birth{
+	display: none;
+}
+
+.show_wedding{
+	display: none;
+}
+
+.display_div,
+.nickname_div,
+.Gender_div,
+.Fullname_div{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.display_div {
+	width: 300px;
+	text-align: center;
+	border-radius: 5px;
+	background: white;
+}
+
+.display_div>a {
+	width: 100%;
+	display: block;
+	line-height: 40px;
+}
+
+.nickname_div {
+	width: 100%;
+	background: #EEEEEE;
+	padding: 10px;
+}
+
+.nickname_top {
+	width: 100%;
+	line-height: 40px;
+}
+
+.nickname_top a {
+	display: inline-block;
+	width: 32%;
+	text-align: center;
+}
+
+.nickname_back {
+	padding: 10px;
+	background: white;
+	min-height: 100px;
+}
+
+.Gender_div {
+	width: 300px;
+	text-align: center;
+	border-radius: 5px;
+	background: white;
+}
+
+.Gender_div>a {
+	width: 100%;
+	display: block;
+	line-height: 45px;
+}
+
+.Fullname_div {
+	width: 100%;
+	background: #EEEEEE;
+	padding: 10px;
+}
+
+.Birth_div{
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	background: white;
+}
+
+.wedding_div{
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	background: white;
+}
+
+.tuichu{
+width: 100%;
+height: 50px;
+text-align: center;
+line-height: 50px;
+background: red;
+color: #FFFFFF;}
+
+/*点击密码跳转的页面*/
+.Mod_pwd{
+	position: relative;
+	width: 100%;
+	min-height: 150px;
+}
+
+.pwd_img{
+	position: absolute;
+	left: 50%;
+	top: 20%;
+	transform: translate(-50%,-20%);
+	width: 100px;
+}
+
+.pwd_img img{
+	width: 100%;
+}
+
+.mod_pwd_center{
+	width: 100%;
+	text-align: center;
+}
+
+.mod_pwd_center p{
+	line-height: 45px;
+}
+
+.mod_pwd_center p:nth-child(2){
+	border-bottom: 1px solid #E3E3E3;
+	border-top: 1px solid #E3E3E3;
+	position: relative;
+}
+
+.Code{
+	position: absolute;
+	right: 0px;
+	display: inline-block;
+	height: 30px;
+	width: 75px;
+	line-height: 30px;
+	color: white;
+	background: #18B2ED;
+	border-radius: 50px;
+	margin-top: 8px;
+}
+
+.pwd_xiugai{
+	margin-top: 50px;
+	text-align: center;
+}
+
+.pwd_xiugai>div{
+	width: 100%;
+	height: 45px;
+	line-height: 45px;
+	color: #18B2ED;
+	border: 1px solid #18B2ED;
+}
+
+.pwd_xiugai>div:first-child{
+	background: #18B2ED;
+	color: white !important;
+}
+
+.pwd_xiugai p{
+	line-height: 35px;
+}

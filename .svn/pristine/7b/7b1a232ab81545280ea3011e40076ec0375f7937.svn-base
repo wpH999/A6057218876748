@@ -1,0 +1,384 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/api.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+
+	<body>
+		<div class="Collect_header tool_header">
+			<div class="container">
+				<div class="page_header">
+					<div class="page_heade">
+						<a href="javascript:history.go(-1)" class="pull-left"><span class="glyphicon glyphicon-chevron-left page_head"></span></a>
+						<span>工具</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tool_top">
+			<div class="container">新上工具</div>
+		</div>
+		
+		<div class="tool_center">
+			<ul>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_1.gif" /></p>
+						<p>我的资产</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_2.gif" /></p>
+						<p>旺财</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_3.gif" /></p>
+						<p>我的预约</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_4.gif" /></p>
+						<p>我的拍卖</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_8.gif" /></p>
+						<p>定制旅行</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_7.gif" /></p>
+						<p>打赏明细</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_9.gif" /></p>
+						<p>阿里云</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_5.gif" /></p>
+						<p>支付宝</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="tool_top">
+			<div class="container">热门工具</div>
+		</div>
+		
+		<div class="tool_center1">
+			<ul>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_10.gif" /></p>
+						<p>我要换钱</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_11.gif" /></p>
+						<p>我的通信</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_12.gif" /></p>
+						<p>主题换肤</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_13.gif" /></p>
+						<p>机票与火车票</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="tool_top">
+			<div class="container">特色工具</div>
+		</div>
+		
+		<div class="tool_center2">
+			<ul>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_14.gif" /></p>
+						<p>淘必中</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_16.gif" /></p>
+						<p>大众评审</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_17.gif" /></p>
+						<p>我的快递</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_15.gif" /></p>
+						<p>实人通行证</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_18.gif" /></p>
+						<p>我的工作</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_20.gif" /></p>
+						<p>兼职赚钱</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_21.gif" /></p>
+						<p>我的健康</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_19.gif" /></p>
+						<p>我的旅途</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_24.gif" /></p>
+						<p>我的超市</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_25.gif" /></p>
+						<p>我的学习</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_22.gif" /></p>
+						<p>我要定制</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_23.gif" /></p>
+						<p>我的宝宝</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="tool_top">
+			<div class="container">推荐工具</div>
+		</div>
+		
+		<div class="tool_center">
+			<ul>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_27.gif" /></p>
+						<p>淘宝日历</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_26.gif" /></p>
+						<p>淘金币</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_28.gif" /></p>
+						<p>拍立淘</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_29.gif" /></p>
+						<p>免费试用</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_30.gif" /></p>
+						<p>安全中心</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_31.gif" /></p>
+						<p>车主权益</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_33.gif" /></p>
+						<p>我的圈子</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_32.gif" /></p>
+						<p>淘票票</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="tool_top">
+			<div class="container">生活服务</div>
+		</div>
+		
+		<div class="tool_center1">
+			<ul>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_37.gif" /></p>
+						<p>上门保洁</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_39.gif" /></p>
+						<p>在线洗衣</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_38.gif" /></p>
+						<p>上门家装</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_40.gif" /></p>
+						<p>更多服务</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+		
+			<div class="tool_top">
+			<div class="container">其他服务</div>
+		</div>
+		
+		<div class="tool_center3">
+			<ul>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_43.gif" /></p>
+						<p>口碑抢优惠</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_44.gif" /></p>
+						<p>我要开店</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_45.gif" /></p>
+						<p>开店技巧</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_46.gif" /></p>
+						<p>我要反馈</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_52.gif" /></p>
+						<p>我要发票</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_51.gif" /></p>
+						<p>企业购</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_50.gif" /></p>
+						<p>语音助手</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_49.gif" /></p>
+						<p>全球播报</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_53.gif" /></p>
+						<p>我要日报</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_56.gif" /></p>
+						<p>会员码</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_55.gif" /></p>
+						<p>我要装修</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_54.gif" /></p>
+						<p>阿里体育</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_59.gif" /></p>
+						<p>爱车估价</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_58.gif" /></p>
+						<p>我要卖车</p>
+					</a>
+				</li>
+				<li>
+					<a>
+						<p><img src="../image/swipe/tool_57.gif" /></p>
+						<p>每日打卡</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</body>
+
+</html>

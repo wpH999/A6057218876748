@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>购物车</title>
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" href="../css/api.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../css/cart.css" />
+		<link rel="stylesheet" href="../layer/skin/default/layer.css" />
+		<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../js/cart.js"></script>
+	</head>
+	<body>
+		<div class="header_top">
+			<div class="container">
+				<div class="header_topy">
+					<a href="javascript:history.go(-1)" class="pull-left"><span class="glyphicon glyphicon-chevron-left page_head head"></span></a>
+					<span>购物车</span>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<ul class="cart_center" id="cartInfo"></ul>
+		</div>
+		<div class="jd_win">
+			<div class="jd_win_box">
+				<div class="jd_win_tit">
+					你确定删除该商品吗？
+				</div>
+				<div class="jd_btn clearfix">
+					<a href="#" class="cancle f_left">取消</a>
+					<a href="#" class="submit f_right">确定</a>
+				</div>
+			</div>
+		</div>
+		<div class="pick_footer">
+			<div class="pull-left">
+				<input type="checkbox" id="checkAll" />
+				&nbsp;全选
+			</div>
+			<div class="pull-left Total">
+				<span>合计：</span><span>￥<span>0.00</span></span>
+			</div>
+			<div class="pull-right Settlement" id="total">
+				<span>结算(0)</span>
+			</div>
+		</div>
+		<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../layer/layer.js"></script>
+		<script type="text/javascript" src="../js/api.js"></script>
+		<script>
+			apiready = function() {
+				var token = $api.getStorage("token");
+				//定义数组来放商品参数
+				var goodsParams ="";
+				api.ajax({
+					url : 'http://101.201.122.173/CartInfoControl/queryCartInfo.do?token=' + token,
+					method : 'post'
+				}, function(ret, err) {
+					if (ret) {
+						var ul = $("#cartInfo");
+						if (ret.data.length <= 0) {
+							var li = $('<li class="cart-list" id="129">购物车空空如也.........</li>');
+							ul.append(li);
+						} else {
+							for (var i = 0; i < ret.data.length; i++) {
+								//把参数放入数组
+								goodsParams+=ret.data[i].goodsParameter+";";
+								var li = $('<li class="cart-list" id="129"><a><div class="pull-left check_box"><input type="checkbox" name="check_box" class="SelectSingle" value="' + ret.data[i].cartId + '"/>' + '</div><div class="cart_img pull-left"><img src="http://101.201.122.173/' + ret.data[i].goodsInfo.goodsPic + '" /></div><div class="pull-right cart">' + '<span class="cart_title">' + ret.data[i].goodsInfo.goodsName + '</span><span class="cart_yanse">' + ret.data[i].goodsParameter + '</span></br>' + '<span class="cart_mony"><span class="money">￥<span class="cart_money" money="68">' + ret.data[i].cartPrice + '</span></span>' + '<span class="cart_money1">￥' + ret.data[i].cartPrice + '</span></span><div class="bottom"><a class="minus"><button data-type="jian">-</button></a>' + '<span class="text-num"><input type="text" class="text_box" value="' + ret.data[i].goodsCount + '" id="count"/></span><a class="plus"><button data-type="add">+</button></a>' + '<a hidden id="cartId">' + ret.data[i].cartId + '</a><button class="remov" target="129" data-type="del">删除</button></div></div> </a></li>');
+								ul.append(li);
+							}
+							//找到button按钮
+							ul.find("button").click(function() {
+								//找到 data-type属性
+								var type = $(this).attr("data-type");
+								//删除
+								if (type == "del") {
+									//获取购物车id
+									var cartId = $(this).parents("li").find("a:eq(5)").text();
+									layer.confirm('你确定要删除此件商品?', {
+										icon : 3,
+										title : '提示'
+									}, function(index) {
+										api.ajax({
+											method : "post",
+											url : "http://101.201.122.173/CartInfoControl/deleteCartInfo.do?token=" + token + "&cartId=" + cartId + ""
+										}, function(ret, err) {
+											if (ret) {
+												if (ret.data == "删除成功！") {
+													layer.msg("删除成功！", {
+														icon : 1
+													});
+													window.location = "../html/cart.html?token=" + token;
+												} else {
+													layer.msg("删除失败！ ", {
+														icon : 2
+													});
+												}
+											} else {
+												api.alert({
+													msg : JSON.stringify(ret)
+												});
+											}
+										});
+										layer.close(index);
+									});
+								}
+								//修改数量
+								//获取数量
+								if (type == "add") {
+									var count = $(this).parents("li").find("input[type=text]:eq(0)").val();
+									//价格
+									var price = $(this).parents("li").find("span:eq(4)").text();
+									var cartId = $(this).parents("li").find("a:eq(5)").text();
+									count++;
+									$(this).parents("li").find("input[type=text]:eq(0)").val(count);
+									count = $(this).parents("li").find("input[type=text]:eq(0)").val();
+									api.ajax({
+										method : "post",
+										url : "http://101.201.122.173/CartInfoControl/updateCartInfo.do?token=" + token + "&cartId=" + cartId + "&goodsCount=" + count + "&cartPrice=" + price + ""
+									}, function(ret, err) {
+										if (ret) {
+										} else {
+											api.alert({
+												msg : JSON.stringify(ret)
+											});
+										}
+									});
+								}
+								if (type == "jian") {
+									var count = $(this).parents("li").find("input[type=text]:eq(0)").val();
+									//价格
+									var price = $(this).parents("li").find("span:eq(4)").text();
+									var cartId = $(this).parents("li").find("a:eq(5)").text();
+									count--;
+									if (count <= 1) {
+										count = 1;
+									}
+									$(this).parents("li").find("input[type=text]:eq(0)").val(count);
+									count = $(this).parents("li").find("input[type=text]:eq(0)").val();
+									api.ajax({
+										method : "post",
+										url : "http://101.201.122.173/CartInfoControl/updateCartInfo.do?token=" + token + "&cartId=" + cartId + "&goodsCount=" + count + "&cartPrice=" + price + ""
+									}, function(ret, err) {
+										if (ret) {
+										} else {
+											api.alert({
+												msg : JSON.stringify(ret)
+											});
+										}
+									});
+								}
+							});
+							//结算
+							$("#total").click(function() {
+								//获取复选框的值
+								var chk_value = [];
+								$('input[name=check_box]:checked').each(function() {//遍历每一个名字为interest的复选框，其中选中的执行函数
+									//将选中的值添加到数组chk_value中
+									chk_value.push($(this).val());
+								});
+								$api.setStorage("cartsId",chk_value);
+								$api.setStorage("isCart","0");
+								window.location = "currentOrder.html";
+							});
+						}
+					} else {
+						api.alert({
+							msg : JSON.stringify(ret)
+						});
+					}
+				});
+			};
+		</script>
+	</body>
+</html>

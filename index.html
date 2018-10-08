@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" href="./css/api.css" />
+		<link rel="stylesheet" href="./css/bootstrap.min.css" />
+		<script type="text/javascript" src="./js/boot.jquery.js"></script>
+		<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+		<style>
+			.footer div {
+				width: 25%;
+				float: left;
+				text-align: center;
+			}
+			.footer {
+				border-top: 1px solid #f4f4f4 !important;
+				position: fixed;
+				bottom: 0px;
+				left: 0px;
+				right: 0px;
+				height: 50px;
+				padding-top: 5px
+			}
+			.active {
+				color: brown;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="footer" id="footer">
+			<div class="menu active" tapmode="active" onclick="fnChange(0)">
+				<span class="glyphicon glyphicon-home"></span></br>
+				主页
+			</div>
+			<div class="menu" tapmode="active" onclick="fnChange(1)">
+				<span class="glyphicon glyphicon-barcode"></span></br>
+				商品
+			</div>
+			<div class="menu" tapmode="active" onclick="fnChange(2)" id="cart">
+				<span class="glyphicon glyphicon-shopping-cart"></span></br>
+				购物车
+			</div>
+			<div class="menu" tapmode="active" onclick="fnChange(3)">
+				<span class="glyphicon glyphicon-user"></span></br>
+				个人中心
+			</div>
+		</div>
+		
+		<script type="text/javascript" src="./js/api.js"></script>
+		<script type="text/javascript">
+			//得到所有的底部按钮
+			var footer = $api.domAll('.menu');
+			apiready = function() {
+			
+			//点击购物车
+//			$("#cart").click(function(){
+//				//获取会员id
+//				var memberId=$api.getStorage("memberId");
+//				if(memberId==null || memberId==""){
+//					window.location="../html/Land.html";
+//				}else{
+//					window.location="../html/cart.html";
+//				}
+//			});
+				var winHeight = api.winHeight - 50;
+				api.openFrameGroup({
+					name : 'pageGroup',
+					rect : {
+						x : 0,
+						y : 0,
+						w : 'auto',
+						h : winHeight,
+						
+					},
+					frames : [{
+						name : 'home',
+						url : 'html/home.html'
+					}, {
+						name : 'product-details',
+						url : 'html/product-details.html'
+					}, {
+						name : 'cart',
+						url : 'html/cart.html'
+					}, {
+						name : 'Personal',
+						url : 'html/Personal.html'
+					}]
+				}, function(ret, err) {
+				});
+			}
+			//底部按钮点击切换
+			function fnChange(index) {
+				api.setFrameGroupIndex({
+					name : 'pageGroup',
+					index : index
+				});
+				//切换footer按钮颜色
+				for (var i = 0; i < footer.length; i++) {
+					$api.removeCls(footer[i], 'active');
+				}
+				$api.addCls(footer[index], 'active');
+			}
+
+			
+		</script>
+	</body>
+</html>

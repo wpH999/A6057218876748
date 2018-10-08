@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/api.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+
+	<body>
+		<div class="Collect_header share_header">
+			<div class="container">
+				<div class="page_header">
+					<div class="page_heade">
+						<a href="javascript:history.go(-1)" class="pull-left"><span class="glyphicon glyphicon-chevron-left page_head"></span></a>
+						<span>我的分享</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="share_tab">
+			<ul class="share_cent">
+				<li class="share_sel">收到的分享</li>
+				<li>发出的分享</li>
+			</ul>
+			<div class="share_center">
+				<div class="share_list checked">
+					<div>
+						<p><img src="../image/share.png" /></p>
+						<p>没有好友分享</p>
+					</div>
+				</div>
+				<div class="share_list">
+					<div>
+						<p><img src="../image/share.png" /></p>
+						<p>数据为空</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			var tab = document.querySelectorAll(".share_tab");
+
+			var lis;
+			
+			for(var i = 0; i < tab.length; i++) {
+
+				lis = tab[i].getElementsByTagName("li");
+
+				console.log(lis)
+
+				for(var j = 0; j < lis.length; j++) {
+
+					(function(index) {
+
+						lis[index].onclick = function() {
+
+							var parent = this.parentNode.children;
+
+							console.log(parent)
+
+							for(var k = 0; k < parent.length; k++) {
+
+								parent[k].className = "";
+							}
+
+							this.className = "share_sel";
+
+							var item_list = this.parentNode.parentNode.children[1].children;
+
+							for(var e = 0; e < item_list.length; e++) {
+
+								item_list[e].className = "share_list";
+							}
+
+							item_list[index].className = "share_list checked"
+						}
+					})(j)
+				}
+			}
+		</script>
+	</body>
+
+</html>

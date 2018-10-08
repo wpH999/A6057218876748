@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" href="css/api.css" />
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/Person_Eject.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+	</head>
+
+	<body>
+		<div class="container">
+			<div class="page_header">
+				<div class="page_heade">
+					<a href="javascript:history.go(-1)" class="glyphicon glyphicon-chevron-left pull-left page_head Pers"></a>
+					<span>修改密码</span>
+				</div>
+			</div>
+			<div class="Mod_pwd">
+				<div class="pwd_img"><img src="image/swipe/pwd.jpg" /></div>
+			</div>
+			<div class="mod_pwd_center">
+				<p>18722869024</p>
+				<p>请输入验证码<span class="Code">获取验证码</span></p>
+				<p>请设置新密码</p>
+			</div>
+			<div class="pwd_xiugai">
+				<div>修改密码</div>
+				<p>或</p>
+				<div>旧密码验证</div>
+			</div>
+		</div>
+	</body>
+
+</html>

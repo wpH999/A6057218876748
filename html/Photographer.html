@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>摄影师</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/api.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<script type="text/javascript" src="../js/boot.jquery.js"></script>
+		<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../js/slide.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="page_header">
+				<div class="her-header">
+					<span class="pull-left"><a href="javascript:history.go(-1)" class="glyphicon glyphicon-chevron-left"></a><span class="her-left">摄影师</span></span><span class="her-right">至上励合团队</span>
+				</div>
+			</div>
+		</div>
+		<div class="team">
+			<p>
+				团队价格<span id="price"></span>起
+			</p>
+			<p class="team_subtitle">
+				<span id="content"></span>
+			</p>
+		</div>
+		<div class="tab2">
+			<div class="detail_tab" style="height:40px;">
+				<ul>
+					<li class="deta_sel" id="compositions" style="width: 50%;">
+						摄影师
+					</li>
+					<li style="width: 50%;">
+						化妆师
+					</li>
+				</ul>
+			</div>
+			<div class="details_cenent">
+				<!--服务-->
+				<div class="deta_list checked">
+					<div class="container" >
+						<ul class="contain containd" id="camer"></ul>
+					</div>
+				</div>
+				<!--化妆师-->
+				<div class="deta_list">
+					<div class="container" >
+						<ul class="contain containd" id="dress"></ul>
+					</div>
+				</div>
+				<script type="text/javascript" src="../js/api.js"></script>
+				<script>
+					//获取teamId
+					var thisURL = document.URL;
+					var getval = thisURL.split('?')[1];
+					var teamId = getval.split("=")[1];
+					getval = thisURL.split('&')[1];
+					var teamPrice = getval.split("=")[1];
+					getval = thisURL.split('&')[2];
+					var teamDetail = getval.split("=")[1];
+					apiready = function() {
+						//加载摄影师
+						api.ajax({
+							url : 'http://101.201.122.173/CameramanControl/queryCameramanByTeam.do?teamId=' + teamId,
+							method : 'post'
+						}, function(ret, err) {
+							if (ret) {
+								//获取div
+								var ul = $("#camer");
+								for (var i = 0; i < ret.data.length; i++) {
+									var li = $('<li><a href="details.html?cameramanId=' + ret.data[i].cameramanId + '&teamId=' + teamId + '"><div>' + '<img src="http://101.201.122.173/' + ret.data[i].cameramanPic + '" /></div>' + '<div class="contain_title1"><p class="title">' + ret.data[i].cameramanName + '</p>' + '<p>' + ret.data[i].cameramanContent + '</p></div><div>' + '<div class="san">' + ret.data[i].cameramanComment + '</div><div class="contain-footer">订单&nbsp;' + '<span>' + ret.data[i].subscribeCount + '</span></div></div> </a></li>');
+									ul.append(li);
+								}
+							} else {
+								api.alert({
+									msg : JSON.stringify(err)
+								});
+							}
+						});
+						//加载化妆师
+						api.ajax({
+							url : 'http://101.201.122.173/DresserControl/queryDresserByTeam.do?teamId=' + teamId,
+							method : 'post'
+						}, function(ret, err) {
+							if (ret) {
+								//获取div
+								var ul = $("#dress");
+								for (var i = 0; i < ret.data.length; i++) {
+									var li = $('<li><a href="dressDetail.html?dresserId=' + ret.data[i].dresserId + '&teamId=' + teamId + '"><div>' + '<img src="http://101.201.122.173/' + ret.data[i].dresserPic + '" /></div>' + '<div class="contain_title1"><p class="title">' + ret.data[i].dresserName + '</p>' + '<p>' + ret.data[i].dresserContent + '</p></div><div>' + '<div class="san">' + ret.data[i].dresserComment + '</div><div class="contain-footer">订单&nbsp;' + '<span>' + ret.data[i].dresserSubscribeCount + '</span></div></div> </a></li>');
+									ul.append(li);
+								}
+							} else {
+								api.alert({
+									msg : JSON.stringify(err)
+								});
+							}
+						});
+						api.ajax({
+							method : "post",
+							url : "http://101.201.122.173/TeamControl/queryTeamByTeamId.do?teamId=" + teamId
+						}, function(ret, err) {//获取集合
+							if (ret) {
+								$("#price").text(ret.data.teamPrice);
+								$("#content").text(ret.data.teamDetail);
+							} else {
+								api.alert({
+									msg : JSON.stringify(err)
+								});
+							}
+						});
+					};
+				</script>
+	</body>
+</html>

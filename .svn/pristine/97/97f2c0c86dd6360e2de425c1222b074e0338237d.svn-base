@@ -1,0 +1,415 @@
+﻿
+.header_top {
+	background: #f49bc1;
+	height: 50px;
+	color: white;
+	line-height: 50px;
+	text-align: center;
+}
+
+.header_top a {
+	color: white;
+}
+
+.cart_center>li{
+	margin-top: 15px;
+}
+
+.cart_center img{
+	width: 120px;
+}
+
+input{
+	width: 30px;
+	height: 30px;
+}
+
+.check_box{
+	padding-top: 40px;
+	margin-right: 10px;
+}
+
+.cart{
+	width: 55%;
+}
+
+.cart>span:first-child{
+	margin-bottom: 10px;
+}
+
+.cart_title{
+	color: black;
+	word-break: break-all;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+}
+
+.cart_yanse {
+	color: #9b9b9b;
+}
+
+.money {
+	color: #ff5500;
+}
+
+.cart_money {
+	font-family: "微软雅黑";
+	font-size: 1.8rem;
+}
+
+.cart_mony>span {
+	margin-right: 5px;
+}
+
+.cart_money1 {
+	color: #9b9b9b;
+	text-decoration: line-through;
+}
+
+.number {
+	padding: 10px;
+	background: red;
+	position: absolute;
+	right: 10px;
+	color: white;
+}
+
+.cart_money2 {
+	font-family: "微软雅黑";
+	font-size: 1.8rem;
+}
+
+.cart_mony2>span {
+	margin-right: 5px;
+}
+
+.cart_number{
+	width: 100px;
+	background: #f1f1f1;
+	border: 1px solid gainsboro;
+	color: black;
+}
+
+.cart_number span{
+	width: 30.3333%;
+	text-align: center;
+	border-right: 1px solid gainsboro;
+}
+
+.cart_number span:last-child{
+	border-right: none;
+}
+
+.bottom{
+	clear: both;
+	text-align: center;
+}
+
+.minus,.text-num,.plus{
+	margin-top: 10px;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+}
+
+.minus button,.plus button{
+	width: 30px;
+	height: 30px;
+	background: #EEECEC;
+	line-height: 30px;
+}
+
+.text_box{
+	text-align: center;
+	border: 1px solid gray;
+}
+
+.bottom>button{
+	float: right;
+	border: 1px solid gray;
+	padding: 6px 12px;
+	border-radius: 5px;
+	margin-top: 7px;
+	box-sizing: border-box;
+	background: white;
+	outline: none;
+}
+
+
+
+
+
+/*失效商品 */
+.cart_shixiao{
+	height: 20px;
+	background: #f4f4f4;
+}
+.cart_xian1{
+	width: 35px;
+	height: 20px;
+	line-height:20px;
+	background: #aaaaaa;
+	border-radius: 20px;
+	margin-top: 40px;
+	margin-right: 5px;
+	color: white;
+	text-align: center;
+	font-size: 0.9rem;
+}
+
+.cart{
+	width: 50%;
+}
+
+.cart_img{
+	margin-right: 5px;
+}
+
+.cart_title1{
+	color: #999999;
+	word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box; 
+    -webkit-box-orient: vertical; 
+    -webkit-line-clamp: 2; 
+    overflow: hidden; 
+}
+
+.money1{
+	width: 100px;
+	color: black;
+	word-wrap:break-word;
+}
+
+.similar{
+	width: 60px;
+	height:30px;
+	border-radius: 20px;
+	border: 2px solid #ff793d;
+	text-align: center;
+	line-height: 27px;
+	color: #ff793d;
+	position: absolute;
+	right: 0px;
+	margin-right: 15px;
+	margin-top: -30px;
+}
+
+.empty{
+	width: 100%;
+	height: 50px;
+	position: relative;
+	margin: 20px 0;
+}
+
+.empty span{
+	width: 150px;
+	border-radius: 15px;
+	border: 2px solid #ff793d;
+	color: #ff793d;
+	text-align: center;
+	line-height: 50px;
+	position: absolute;
+	left: 28%;
+	transform: translateX(-28%);
+}
+
+/*购物车帮你挑*/
+.pick{
+	background: #f5f5f5;
+	height: 50px;
+}
+
+.pick_back{
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	color: #ff793d;
+	font-size: 1.8rem;
+	padding-left: 30px;
+	background: url(../image/cart.jpg) no-repeat center;
+}
+
+.pick_center{	
+	background: #eeeeee;
+}
+
+.pick_top{
+	height: 100px;
+	padding: 20px;
+}
+
+.pick_top>div{
+	margin-right: 20px;
+}
+
+.pick_top>div:last-child{
+	line-height: 60px;
+	font-size: 1.8rem;
+}
+
+.pick_top>div img{
+	width: 60px;
+	height: 60px;
+}
+
+.pick_centent{
+	margin-left: 8px;
+	background: #eeeeee;	
+}
+
+.pick_centent li{
+	width: 48%;
+	height:355px;
+	background: white;
+	position: relative;
+	float: left;	
+	border: 1px solid #E9E9E9;
+	margin-right: 5px;	
+}
+
+.pick_centent li a p:nth-child(2),.pick_centent li a p:nth-child(3),.pick_centent li a p:nth-child(4){
+	padding: 0px 10px;
+}
+
+.pick_centent li a p:nth-child(2){
+	color: black;
+	word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box; 
+    -webkit-box-orient: vertical; 
+    -webkit-line-clamp: 2; 
+    overflow: hidden; 
+}
+
+.pick_centent li a p:nth-child(3) span{
+	margin-right: 5px;
+}
+
+.pick_centent li a p:nth-child(4){
+	width: 100%;
+	background: #f8f8f8;
+	height: 30px;
+	line-height: 30px;
+	position: absolute;
+	color: #c3c3c3;
+}
+
+.pick_footer {
+	position: fixed;
+	right: 0px;
+	left: 0px;
+	bottom: 0px;
+	height: 50px;
+	background: white;
+	border-top: 1px solid #f4f4f4;
+}
+
+.pick_footer div {
+	text-align: center;
+	width: 33.3333333%;
+}
+
+.pick_footer div:first-child{
+	padding-top: 12px;
+}
+
+.pick_footer div:last-child {
+	background: #ff8500;
+	color: white;
+	line-height: 50px;
+	text-align: center;
+	font-size: 2rem;
+}
+
+.pick_footer div:first-child span{
+	margin-left: 10px;
+}
+
+.pick_Select {
+	width: 30px;
+	height: 30px;
+	border: 1px solid #a3a8b9;
+	border-radius: 50%;
+	margin-right: 10px;
+	float: left;
+	text-align: center;
+	line-height: 35px;
+	font-size: 2rem;
+	color: white;
+}
+
+.pick_Sele {
+	line-height: 30px;
+}
+
+.pick_footer div:nth-child(2) {
+	line-height: 50px;
+	border-left: 1px solid #eaeaea;
+}
+
+.jd_win{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top:0;
+    left:0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    display:none;
+}
+
+.jd_win_box{
+    width: 80%;
+    padding: 0 10px;
+    border-radius: 4px;
+    background-color: #fff;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    -webkit-transform:translate(-50%, -50%);
+}
+
+.jd_win_tit{
+    border-bottom:1px solid #ccc;
+    line-height: 75px;
+    text-align: center;
+    font-size: 18px;
+}
+.jd_btn{
+    width: 100%;
+    padding: 10px 0;
+}
+
+.jd_btn  a{
+    line-height: 36px;
+    width: 44%;
+    text-align: center;
+    border-radius: 4px;
+}
+
+.cancle{
+    margin-right: 10%;
+    border: 1px solid #ccc;
+}
+
+.submit{
+    background: #d8505c;
+    color: #fff;
+}
+
+.jd_win1{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top:0;
+    left:0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    display:none;
+}

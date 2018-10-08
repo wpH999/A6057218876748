@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>购物车</title>
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" href="../css/api.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../css/cart.css" />
+		<link rel="stylesheet" href="../layer/skin/default/layer.css" />
+		<script type="text/javascript" src="../js/api.js"></script>
+	</head>
+	<body>
+		<div class="header_top">
+			<div class="container">
+				<div class="header_topy">
+					<a href="javascript:history.go(-1)" class="pull-left"><span class="glyphicon glyphicon-chevron-left page_head head"></span></a>
+					<span>购买商品</span>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<ul class="cart_center">
+				<li class="cart-list" id="129">
+					<a>
+					<div class="cart_img pull-left" style="margin-left: 100px;">
+						<img id="img1" src="" />
+					</div>
+					<div class="pull-right cart" style="position: absolute;margin-left: 250px;">
+						<span class="cart_title" style="color: #ff8500">￥<span id="newPrice">5522022</span>&nbsp;&nbsp;<span class="cart_money1" id="oldPrice">￥5522022</span></span>
+						<span class="cart_title" id="param"></span>
+						<br/>
+						<span class="cart_title"> 购买数量&nbsp;&nbsp;&nbsp;
+							<input type="button" style="background-color: #eee;" value="-" id="jian">
+							<input type="text" value="1" style="text-align: center;" id="count"/>
+							<input type="button" style="background-color: #eee;" value="+" id="add">
+						</span>
+					</div> </a>
+				</li>
+			</ul>
+		</div>
+		<div class="pick_footer">
+			<div class="pull-right Settlement" style="width: 100%;">
+				<span id="currentBuy">确定购买</span>
+			</div>
+		</div>
+		<!--商品id-->
+		<input type="hidden"  id="goodsId" value="">
+		<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../layer/layer.js"></script>
+		<script>
+			//取得goodsId
+			var thisURL = document.URL;
+			var getval = thisURL.split('?')[1];
+			var goodsId = getval.split("=")[1];
+			apiready = function() {
+				//获取数量
+				var count = $("#count").val();
+				//增加数量
+				$("#add").click(function() {
+					count++;
+					$("#count").val(count)
+				});
+				//减少数量
+				$("#jian").click(function() {
+					count--;
+					if (count <= 1) {
+						count = 1;
+					}
+					$("#count").val(count);
+				});
+				//加载商品
+				api.ajax({
+					method : "post",
+					url : "http://101.201.122.173/GoodsInfoControl/queryGoodsById.do?goodsId=" + goodsId
+				}, function(ret, err) {
+					if (ret) {
+						$("#img1").attr("src", "http://101.201.122.173/" + ret.data.goodsPic + "");
+						$("#newPrice").text(ret.data.goodsPrice);
+						$("#oldPrice").text("￥" + ret.data.goodsPrice);
+						$("#goodsId").val(ret.data.goodsId);
+						//商品参数
+						var goodsParam = [];
+						goodsParam = ret.data.goodsParamList;
+						var param = $("#param");
+						for (var j = 0; j < goodsParam.length; j++) {
+							var span = $('<p><span id="key">' + goodsParam[j].paramKey + '</span>&nbsp;&nbsp;&nbsp;' + '<input type="checkbox" name="goodsParam" style="width:10px;height:10px;" value="' + goodsParam[j].paramKey + ':' + goodsParam[j].paramValue + '"/>' + goodsParam[j].paramValue + '</p>');
+							param.append(span);
+						}
+						//
+					} else {
+						api.alert({
+							msg : JSON.stringify(ret)
+						});
+					}
+				});
+				//立即购买
+				$("#currentBuy").click(function() {
+					//获取数量
+					var count = $("#count").val();
+					//获取商品参数
+					var goodsParams = "";
+					$('input[name="goodsParam"]:checked').each(function() {
+						goodsParams+=$(this).val()+";";
+					});
+					if (goodsParams == "" || goodsParams == null) {
+						alert('你还没有选择参数！');
+					} else {
+						$api.setStorage("count", count);
+						$api.setStorage("goodsId",goodsId);
+						$api.setStorage("isCart","1");
+						window.location = "../html/currentOrder.html?goodsParam=" + goodsParams + "";
+					}
+				});
+			};
+		</script>
+	</body>
+</html>

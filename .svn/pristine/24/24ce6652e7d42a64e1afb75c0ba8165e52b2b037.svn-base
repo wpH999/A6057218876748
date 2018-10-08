@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>摄影</title>
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" href="../css/api.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../js/boot.jquery.js"></script>
+		<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../js/slide.js"></script>
+	</head>
+	<body class="header">
+		<div class="phon-header">
+			<div class="container">
+				<div class="phon-left">
+					<a href="javascript:history.go(-1)" class="page_headd pull-left"><img src="../image/Enter.png" /></a><span>摄影</span>
+				</div>
+			</div>
+		</div>
+		<div class="tab1">
+			<div class="tab-nav">
+				<!--摄影分类-->
+				<ul id="camerGroup"></ul>
+			</div>
+			<div id="myCarousel" class="carousel slide">
+				<!-- 轮播（Carousel）项目 -->
+				<div class="carousel-inner" id="slide"></div>
+				<!-- 轮播（Carousel）导航 -->
+				<a class="carousel-control left" href="#myCarousel"
+				data-slide="prev">&lsaquo; </a>
+				<a class="carousel-control right" href="#myCarousel"
+				data-slide="next">&rsaquo; </a>
+			</div>
+			<div class="tab-content">
+				<!--婚纱-->
+				<div class="list-item checked">
+					<div class="container">
+						<ul class="contain" id="group"></ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+		</div> <script type="text/javascript" src="../js/api.js"></script>
+		<script>
+			apiready = function() {
+				//加载幻灯片
+				api.ajax({
+					url : 'http://101.201.122.173/CamerSlideControl/queryCamerSlide.do',
+					method : 'post'
+				}, function(ret, err) {
+					if (ret) {
+						var div = $("#slide");
+						for (var i = 0; i < ret.data.length; i++) {
+							var div1 = $('<div class="item"><img src="http://101.201.122.173/' + ret.data[i].camerSlideImgUrl + '" /></div>');
+							div.append(div1);
+						}
+						$("#slide div:eq(0)").addClass("active");
+					} else {
+						api.alert({
+							msg : JSON.stringify(err)
+						});
+					}
+				});
+				//加载摄影分类
+				api.ajax({
+					url : 'http://101.201.122.173/CamerGroupControl/selectAllCamerGroup.do',
+					method : 'post'
+				}, function(ret, err) {
+					if (ret) {
+						var data = JSON.stringify(ret);
+						//获取ul
+						var ul = $("#camerGroup");
+						$.each(ret.data, function(index, item) {
+							var li = $('<li>' + item.camerGroupName + '</li>');
+							ul.append(li);
+							
+							//加载第一个摄影组合
+							api.ajax({
+								url : 'http://101.201.122.173/TeamControl/selectTeamByCamerGroup.do',
+								method : 'post',
+								data : {
+									values : {
+										camerGroupId : ret.data[0].camerGroupId
+									}
+								}
+							}, function(ret, err) {
+								if (ret) {
+									var ul = $("#group");
+									ul.find("li").remove();
+									if (ret.data.length <= 0) {
+										var li = $('<li>暂时没有数据</li>');
+										ul.append(li);
+									} else {
+										$.each(ret.data, function(index, item) {
+											var li = $('<li><a href="Photographer.html?teamId=' + item.teamId + '&teamPrice=' + item.teamPrice + '&teamDetail=' + item.teamDetail + '"><div><img src="http://101.201.122.173/' + item.teamPic + '" /></div>' + '<div class="contain_title"><p>' + item.teamName + '</p><p>' + item.teamDetail + '</p></div><div><div class="san">' + item.teamComment + '</div>' + '<div class="contain-foot">服务费<span class="money">￥' + item.teamPrice + '</span>起</div></div> </a></li>');
+											ul.append(li);
+										});
+									}
+								} else {
+									api.alert({
+										msg : JSON.stringify(err)
+									});
+								}
+							});
+							//给li添加点击事件
+							li.click(function() {
+								li.prev().removeClass("tab-sel");
+								li.addClass("tab-sel");
+								li.next().removeClass("tab-sel");
+								api.ajax({
+									url : 'http://101.201.122.173/TeamControl/selectTeamByCamerGroup.do',
+									method : 'post',
+									data : {
+										values : {
+											camerGroupId : item.camerGroupId
+										}
+									}
+								}, function(ret, err) {
+									if (ret) {
+										var ul = $("#group");
+										ul.find("li").remove();
+										if (ret.data.length <= 0) {
+											var li = $('<li>暂时没有数据</li>');
+											ul.append(li);
+										} else {
+											$.each(ret.data, function(index, item) {
+												var li = $('<li><a href="Photographer.html?teamId=' + item.teamId + '&teamPrice=' + item.teamPrice + '&teamDetail=' + item.teamDetail + '"><div><img src="http://101.201.122.173/' + item.teamPic + '" /></div>' + '<div class="contain_title"><p>' + item.teamName + '</p><p>' + item.teamDetail + '</p></div><div><div class="san">' + item.teamComment + '</div>' + '<div class="contain-foot">服务费<span class="money">￥' + item.teamPrice + '</span>起</div></div> </a></li>');
+												ul.append(li);
+											});
+										}
+									} else {
+										api.alert({
+											msg : JSON.stringify(err)
+										});
+									}
+								});
+							});
+						});
+						$("#camerGroup li:eq(0)").addClass("tab-sel");
+					} else {
+						api.alert({
+							msg : JSON.stringify(err)
+						});
+					}
+				});
+			}
+		</script>
+	</body>
+</html>

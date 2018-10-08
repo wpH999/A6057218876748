@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>收藏夹</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/api.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<link rel="stylesheet" href="../layer/skin/default/layer.css" />
+		<style>
+			.collect div {
+				margin-right: 30px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="Collect_header">
+			<div class="container">
+				<div class="page_header">
+					<div class="page_heade">
+						<a href="javascript:history.go(-1)" class="pull-left"><span class="glyphicon glyphicon-chevron-left page_head"></span></a>
+						<span>我的收藏</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="Collect_center" id="collections"></div>
+		<script src="../js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="../layer/layer.js"></script>
+		<script type="text/javascript" src="../js/api.js"></script>
+		<script>
+			apiready = function() {
+				var memberId = $api.getStorage('memberId');
+				//加载收藏夹
+				api.ajax({
+					method : "post",
+					url : "http://101.201.122.173/CollectionInfoControl/queryCollectionInfo.do?memberId=" + memberId,
+				}, function(ret, err) {
+					if (ret) {
+						//获取div
+						var collections = $("#collections");
+						if (ret.data.length <= 0) {
+							var collection = $('<div class="collect">收藏夹为空........</div>');
+							collections.append(collection);
+						} else {
+							for (var i = 0; i < ret.data.length; i++) {
+								var collection = $('<div class="collect" ><div class="pull-left" style="margin-left: 20px;"><p hidden>' + ret.data[i].goodsInfo.goodsId + '</p>' + '<p hidden>' + ret.data[i].collectionId + '</p><img src="http://101.201.122.173/' + ret.data[i].goodsInfo.goodsPic + '" /></div>' + '<div class="pull-right" ><p class="collect_title">' + ret.data[i].goodsInfo.goodsName + ' </p><br /><p class="collect_title" style="color: #E8E8E8;">' + '商品销量&nbsp;&nbsp;&nbsp;' + ret.data[i].goodsInfo.goodsCount + '件</p><p class="collect_title" style="color: #E8E8E8;">商品价格&nbsp;&nbsp;&nbsp;<span style="color: red;">￥' + ret.data[i].goodsInfo.goodsPrice + '</span>元</p><p class="collect_title" style="color: #E8E8E8;">' + '收藏时间&nbsp;&nbsp;&nbsp;' + ret.data[i].collectionDate + '</p><div class="coll_but"><button style="background-color:#E8E8E8;border: 1px solid #DADADA" data-type="see">查看</button>' + '<button style="background-color:#E8E8E8;border: 1px solid #D88317" data-type="buy"><span style="color:#D88317; ">购买</span></button>' + '<button style="background-color:#E8E8E8;border: 1px solid #DADADA" data-type="cancel">取消收藏</button></div></div></div>');
+								collections.append(collection);
+							}
+						}
+						//找到button按钮
+						collections.find("button").click(function() {
+							//找到data-type属性
+							var type = $(this).attr("data-type");
+							/**
+							 * 查看
+							 */
+							if (type == "see") {
+								//获取id
+								var goodsId = $(this).parents("div[class=collect]").find("p:eq(0)").text();
+								window.location = "../html/Comm_details.html?goodsId=" + goodsId + "";
+							}
+							/**
+							 * 取消收藏
+							 */
+							if (type == "cancel") {
+								//获取收藏夹Id
+								var collectionId = $(this).parents("div[class=collect]").find("p:eq(1)").text();
+								api.ajax({
+									method : "post",
+									url : "http://101.201.122.173/CollectionInfoControl/deleteCollectionInfo.do?collectionId=" + collectionId
+								}, function(ret, err) {
+									if (ret) {
+										if (ret.errorCode == 0) {
+											layer.msg("取消收藏成功！", {
+												icon : 1
+											});
+											window.location="../html/Collection.html?memberId="+memberId;
+										} else {
+											layer.msg("取消收藏失败！", {
+												icon : 2
+											});
+										}
+									} else {
+										api.alert({
+											msg : JSON.stringify(ret)
+										});
+									}
+								});
+							}
+							/**
+							 * 购买
+							 */
+							if (type == "buy") {
+								//获取id
+								var goodsId = $(this).parents("div[class=collect]").find("p:eq(0)").text();
+								window.location = "../html/buy.html?goodsId=" + goodsId + "";
+							}
+						});
+					} else {
+						api.alert({
+							msg : JSON.stringify(ret)
+						});
+					}
+				});
+			};
+		</script>
+	</body>
+</html>

@@ -1,0 +1,461 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>我的订单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/api.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<link rel="stylesheet" href="../layer/skin/default/layer.css" />
+		<script type="text/javascript" src="../js/boot.jquery.js"></script>
+		<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../js/slide.js"></script>
+		<style>
+			p {
+				margin: 0px;
+				margin-bottom: 10px;
+			}
+			#p1, #p2, #p3 {
+				margin-bottom: 10px;
+				margin-left: 40px;
+			}
+			.dingdan {
+				position: fixed;
+				bottom: 0px;
+				left: 0px;
+				right: 0px;
+			}
+			#but {
+				padding: 10px 20px;
+				color: #fff;
+			}
+			.o_footer img {
+				width: 70px;
+			}
+			.o_footer img:last-child {
+				width: 80px;
+			}
+			#quxiao {
+				font-size: 1.5 rem;
+				font-weight: bold;
+			}
+		</style>
+		</style>
+	</head>
+	<body>
+		<div class="Collect_header">
+			<div class="container">
+				<div class="page_header">
+					<div class="page_heade">
+						<a href="javascript:history.go(-1)" class="pull-left"><span class="glyphicon glyphicon-chevron-left page_head"></span></a>
+						<span>确认订单</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tab1">
+			<div class="tab-nav" style="height: inherit;">
+				<p id="p1">
+					收货人：<span id="dname">更好的发过火</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="dphone">4545454</span>
+				</p>
+				<p id="p2" style="padding-right: 15px">
+					<span class="glyphicon glyphicon-map-marker"></span>&nbsp;&nbsp;&nbsp;&nbsp;收货地址：<span id="daddress"></span>
+					<a id="forWord" href="#" class="pull-right"><span class="glyphicon glyphicon-chevron-right"></span></a>
+				</p>
+				<p style="display: none;" id="p3">
+					没有收货地址，<a id="addAddress" href="#" style="text-decoration: solid;color: #337AB7;">请添加</a>
+				</p>
+			</div>
+			<div class="tab-content">
+				<!--全部-->
+				<div class="list-item checked">
+					<div class="container">
+						<ul class="order_center" id="queren"></ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="dingdan">
+			<div style="float: right;">
+				<span style="font-size: 28px;margin-right: 20px">合计:<span style="color: #FC831A;" id="money"></span> </span>
+				<input type="button" value="提交订单" style="background-color: #FF6601;" id="but"/>
+			</div>
+		</div>
+		<div  class="o_orde">
+			<div class="o_footer">
+				<div style="color:blue;">
+					订单支付
+				</div>
+				<div id="weChat">
+					<img src="../image/wxzf.png" />
+				</div>
+				<div id="apply">
+					<img src="../image/zfb.png" />
+				</div>
+				<div id="quxiao">
+					取消
+				</div>
+			</div>
+		</div>
+		<!--商品id-->
+		<input type="hidden" id="goodsId" value="" />
+		<script type="text/javascript" src="../js/api.js"></script>
+		<script type="text/javascript" src="../layer/layer.js"></script>
+		<script type="text/javascript">
+			var count = 0;
+			apiready = function() {
+				var isCart = $api.getStorage("isCart");
+				var goodsId = $api.getStorage("goodsId");
+				var count1 = $api.getStorage('count');
+				//取出会员id
+				var memberId = $api.getStorage('memberId');
+				api.ajax({
+					url : 'http://101.201.122.173/DeliveryControl/queryDelivery.do?memberId=' + memberId,
+					method : 'post'
+				}, function(ret, err) {
+					if (ret) {
+						if (ret.data.length <= 0) {
+							$("#p3").show();
+							$("#p1").hide();
+							$("#p2").hide();
+						} else {
+							for (var i = 0; i < ret.data.length; i++) {
+								//默认地址
+								if (ret.data[i].deliveryStatus == 1) {
+									//设置值
+									$("#dname").text(ret.data[i].deliveryName);
+									$("#dphone").text(ret.data[i].deliveryPhone);
+									$("#daddress").text(ret.data[i].deliveryAddress);
+								} else {
+									//设置值
+									$("#dname").text(ret.data[1].deliveryName);
+									$("#dphone").text(ret.data[1].deliveryPhone);
+									$("#daddress").text(ret.data[1].deliveryAddress);
+								}
+							}
+						}
+					} else {
+						api.alert({
+							msg : JSON.stringify(err)
+						});
+					}
+				});
+				//前进
+				$("#forWord").click(function() {
+					window.location = "../html/delivery.html?memberId=" + memberId;
+				});
+				//商品信息
+				if (isCart == 1) {
+					//取得goodsId
+					var thisURL = document.URL;
+					var getval = thisURL.split('?')[1];
+					var goodsParam = getval.split("=")[1];
+					api.ajax({
+						method : "post",
+						url : "http://101.201.122.173/GoodsInfoControl/queryGoodsById.do?goodsId=" + goodsId
+					}, function(ret, err) {
+						if (ret) {
+							var ul = $("#queren");
+							var li = "";
+							li = $('<li ><a><div class="order_img pull-left"><img id="img1" src="http://101.201.122.173/' + ret.data.goodsPic + '" /></div>' + '<div class="pull-right" style="width: 35%;"><p class="order_title" id="name">' + '' + ret.data.goodsName + '</p><p class="order_yanse" id="param">' + goodsParam + '</p>' + '<p class="order_mony"><span class="money">￥<span class="cart_money" id="newPrice">' + ret.data.goodsPrice + '</span>' + '</span><span class="order_money1" id="oldPrice">￥' + ret.data.goodsPrice + '</span><span class="number">x<span id="number">' + count1 + '' + '</span></span></p></div><p class="order_gengduo"><a>购买数量</a>' + '<input type="button" id="jian" value="-" class="btn btn-default" style="background-color: #DCDCDD;width: 50px;margin-left: 100px;"/>' + '<input type="text" style="height: 30px;width: 40px;text-align: center;" value="' + count1 + '" id="count"/>' + '<input type="button" id="add" value="+" class="btn btn-default" style="background-color: #DCDCDD;width: 50px;"/>' + '</p> </a></li>');
+							ul.append(li);
+							//设置合计
+							var number = $("#number").text();
+							var newPrice = $("#newPrice").text();
+							$("#money").text("￥" + number * newPrice);
+							//增加数量
+							$("#add").click(function() {
+								//获取数量
+								count = $("#count").val();
+								count++;
+								$("#count").val(count);
+								$("#number").text(count);
+								var number = $("#number").text();
+								var newPrice = $("#newPrice").text();
+								$("#money").text("￥" + number * newPrice);
+							});
+							//减少数量
+							$("#jian").click(function() {
+								//获取数量
+								count = $("#count").val();
+								count--;
+								if (count <= 1) {
+									count = 1;
+								}
+								$("#count").val(count);
+								$("#number").text(count);
+								var number = $("#number").text();
+								var newPrice = $("#newPrice").text();
+								$("#money").text("￥" + number * newPrice);
+							});
+						} else {
+							api.alert({
+								msg : JSON.stringify(err)
+							});
+						}
+					});
+					//购物车信息
+				} else if (isCart == 0) {
+					//取得购物车id
+					var CartIds = $api.getStorage("cartsId");
+					var ul = $("#queren");
+					
+					for (var i = 0; i < CartIds.length; i++) {
+						//加载商品信息
+						api.ajax({
+							method : "post",
+							url : "http://101.201.122.173/CartInfoControl/queryCartInfoById.do?cartId=" + CartIds[i] + ""
+						}, function(ret, err) {
+							if (ret) {
+								var li= $('<li ><a><div class="order_img pull-left"><img id="img1" src="http://101.201.122.173/' + ret.data.goodsInfo.goodsPic + '" /></div>' + 
+								'<div class="pull-right" style="width: 35%;"><p class="order_title" id="name">' + ret.data.goodsInfo.goodsName + '</p><p class="order_yanse" id="param">' + ret.data.goodsParameter + '</p>' + 
+								'<p class="order_mony"><span class="money">￥<span class="cart_money" id="newPrice">' + ret.data.cartPrice + '</span>' + 
+								'</span><span class="order_money1" id="oldPrice">￥' + ret.data.cartPrice + '</span><span class="number">x<span id="number">' + ret.data.goodsCount + '' + 
+								'</span></span></p></div><p class="order_gengduo"><a>购买数量</a>' + 
+								'<input type="button" data-type="jian" value="-" class="btn btn-default" style="background-color: #DCDCDD;width: 50px;margin-left: 100px;"/>' + 
+								'<input type="text" style="height: 30px;width: 40px;text-align: center;" value="' + ret.data.goodsCount + '" id="count"/>' + 
+								'<input type="button" data-type="add" value="+" class="btn btn-default" style="background-color: #DCDCDD;width: 50px;"/>' + 
+								'</p> </a></li>');
+								ul.append(li);
+						
+							//找到button按钮
+								ul.find("input[type=button]").click(function(){
+									//获取data-type属性
+									var type=$(this).attr("data-type");
+									 
+									//减数量
+									if(type=="jian"){
+										//获取数量
+										var count=$(this).parents("li").find("input[type=text]").val();
+										alert(count);
+									}
+									
+									//加数量
+									if(type=="add"){
+										//获取数量
+								alert(type);
+									}
+									
+								});
+								
+							} else {
+								api.alert({
+									msg : JSON.stringify(err)
+								});
+							}
+						});
+					}
+				
+				}
+				//拆分商品参数
+				//				var goodsParams = [];
+				//				goodsParams = goodsParam.split(";");
+				//				for (var i = 0; i < goodsId.length; i++) {
+				//					//加载商品信息
+				//					api.ajax({
+				//						method : "post",
+				//						url : "http://101.201.122.173/GoodsInfoControl/queryGoodsById.do?goodsId=" + goodsId[i]
+				//					}, function(ret, err) {
+				//						if (ret) {
+				//							var ul = $("#queren");
+				//							var li = "";
+				//							var param = "";
+				//							for (var j = 0; j < goodsParams.length; j++) {
+				//								li = $('<li ><a><div class="order_img pull-left"><img id="img1" src="http://101.201.122.173/' + ret.data.goodsPic + '" /></div>' + '<div class="pull-right" style="width: 35%;"><p class="order_title" id="name">' + '' + ret.data.goodsName + '</p><p class="order_yanse" id="param">' + goodsParams[j] + '</p>' + '<p class="order_mony"><span class="money">￥<span class="cart_money" id="newPrice">' + ret.data.goodsPrice + '</span>' + '</span><span class="order_money1" id="oldPrice">￥' + ret.data.goodsPrice + '</span><span class="number">x<span id="number">1' + '</span></span></p></div><p class="order_gengduo"><a>购买数量</a>' + '<input type="button" id="jian" value="-" class="btn btn-default" style="background-color: #DCDCDD;width: 50px;margin-left: 100px;"/>' + '<input type="text" style="height: 30px;width: 40px;text-align: center;" value="1" id="count"/>' + '<input type="button" id="add" value="+" class="btn btn-default" style="background-color: #DCDCDD;width: 50px;"/>' + '</p> </a></li>');
+				//							}
+				//							ul.append(li);
+				//							//							$("#name").text(ret.data.goodsName);
+				//							//							$("#img1").attr("src", "http://101.201.122.173/" + ret.data.goodsPic + "");
+				//							//							$("#newPrice").text(ret.data.goodsPrice);
+				//							//							$("#oldPrice").text("￥" + ret.data.goodsPrice);
+				//							//							$("#goodsId").val(ret.data.goodsId);
+				//							//							$("#count").val(count1);
+				//							//							$("#number").text($("#count").val());
+				//							//							$("#param").text(goodsParam);
+				//							//							//获取数量
+				//							//							var number = $("#number").text();
+				//							//							var newPrice = $("#newPrice").text();
+				//							//							$("#money").text("￥" + number * newPrice);
+				//						} else {
+				//							api.alert({
+				//								msg : JSON.stringify(ret)
+				//							});
+				//						}
+				//					});
+				//}
+				//获取用户登录安全码
+				var token = $api.getStorage('token');
+				//订单id
+				var orderOfGoodsDetailIds = 0;
+				//确认订单并添加到订单信息表中
+				$("#but").click(function() {
+					//收货相关
+					var deliveryName = $("#dname").text();
+					var deliveryPhone = $("#dphone").text();
+					var deliveryAddress = $("#daddress").text();
+					//商品相关
+					var goodsId = $("#goodsId").val();
+					var goodsPrice = $("#newPrice").text();
+					var goodsCount = $("#count").val();
+					var goodsParam = $("#param").text();
+					var cartIds = 1;
+					var cartCount = 0;
+					//直接购买
+					if (isCart == 1) {
+						//添加到订单信息表中
+						api.ajax({
+							url : 'http://101.201.122.173/OrderOfGoodsControl/saveOrderOfGoods.do',
+							method : 'post',
+							data : {
+								values : {
+									token : token,
+									deliveryName : deliveryName,
+									deliveryPhone : deliveryPhone,
+									deliveryAddress : deliveryAddress,
+									goodsId : goodsId,
+									goodsPrice : goodsPrice,
+									goodsCount : goodsCount,
+									goodsParam : goodsParam,
+									isCart : isCart,
+									cartIds : cartIds,
+									cartCount : cartCount
+								}
+							}
+						}, function(ret, err) {
+							if (ret) {
+								alert(ret.data);
+								if (ret.errorCode == 0) {
+									//alert(ret.data);
+									orderOfGoodsDetailIds = ret.data;
+									//								layer.msg('添加成功！', {
+									//									icon : 1
+									//								});
+								} else {
+									alert(ret.data);
+									layer.msg('添加失败！', {
+										icon : 2
+									});
+								}
+							} else {
+								api.alert({
+									msg : JSON.stringify(ret)
+								});
+							}
+						});
+						//购物车购买
+					} else if (isCart == 0) {
+					}
+					//显示订单支付
+					$(".o_orde").show();
+				});
+				//微信支付
+				$("#weChat").click(function() {
+					//进度条
+					// api.showProgress({});
+					api.ajax({
+						url : 'http://101.201.122.173/WxpayControl/WxpayTo.do',
+						method : 'post',
+						data : {
+							values : {
+								token : token,
+								orderOfGoodsDetailIds : orderOfGoodsDetailIds
+							}
+						}
+					}, function(ret, err) {
+						if (ret) {
+							if (ret.errorCode == 0) {
+								api.alert({
+									msg : JSON.stringify(ret)
+								});
+								var weiXin = api.require('weiXin');
+								weiXin.payOrder({
+									orderId : ret.data.prepayid,
+									partnerId : ret.data.partnerid,
+									nonceStr : ret.data.noncestr,
+									timeStamp : ret.data.timestamp,
+									package : ret.data.package,
+									sign : ret.data.sign
+								}, function(ret, err) {
+									if (ret.status) {
+									} else {
+										api.alert({
+											msg : err.msg
+										});
+									}
+								});
+							} else {
+								layer.msg("失败！", {
+									icon : 2
+								});
+							}
+						} else {
+							api.alert({
+								msg : JSON.stringify(err)
+							});
+						}
+					});
+				});
+				/**
+				 *支付宝支付
+				 */
+				$("#apply").click(function() {
+					alert(orderOfGoodsDetailIds);
+					api.ajax({
+						url : 'http://101.201.122.173/AlipayControl/alipayTo.do?token=' + token + '&orderOfGoodsDetailIds=' + orderOfGoodsDetailIds + '',
+						method : 'post'
+					}, function(ret, err) {
+						if (ret) {
+							if (ret.errorCode == 0) {
+								//								api.alert({
+								//									msg : JSON.stringify(ret)
+								//								});
+								var aliPay = api.require('aliPay');
+								aliPay.payOrder({
+									orderInfo : ret.data
+								}, function(ret, err) {
+									//									api.alert({
+									//										title : '支付结果',
+									//										msg : ret.code,
+									//										buttons : ['确定']
+									//									});
+								});
+							} else {
+								layer.msg("失败！", {
+									icon : 2
+								});
+							}
+						} else {
+							api.alert({
+								msg : JSON.stringify(ret)
+							});
+						}
+					});
+				});
+				//取消
+				$("#quxiao").click(function() {
+					api.ajax({
+						url : 'http://101.201.122.173/OrderOfGoodsDetailControl/cancleOrderOfGoods.do？token=' + token + '&orderOfGoodsDetailId=' + orderOfGoodsDetailIds + '',
+						method : 'post'
+					}, function(ret, err) {
+						if (ret) {
+							alert(ret.errorCode);
+							if (ret.errorCode == 0) {
+								window.location = "../html/Order.html";
+							} else {
+								layer.msg("取消失败！", {
+									icon : 2
+								});
+							}
+						} else {
+							api.alert({
+								msg : JSON.stringify(ret)
+							});
+						}
+					});
+				});
+			};
+		</script>
+	</body>
+</html>
+s
